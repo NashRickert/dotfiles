@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: limsup
+# key: ls
+# --
+\limsup $0

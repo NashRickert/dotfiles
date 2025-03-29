@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: 426-preamble
+# key: 426-preamble
+# --
+\def\Gen{{\mathsf{Gen}}}
+\def\Kg{{\mathsf{Kg}}}
+\def\Enc{{\mathsf{Enc}}}
+\def\Dec{{\mathsf{Dec}}}
+\def\Perms{{\mathsf{Perms}}}
+\def\Init{{\mathsf{Init}}}
+\def\Eval{{\mathsf{Eval}}}
+\def\AES{{\mathsf{AES}}}
+\def\RP{{\mathsf{RP}}}
+\def\BC{{\mathsf{BC}}}
+\def\Adv{{\mathsf{Adv}}}
+\def\prp{{\textup{prp}}}
+

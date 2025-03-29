@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: set-notation
+# key: \{
+# --
+\\{ $0 \\}

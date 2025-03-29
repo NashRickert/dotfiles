@@ -1,0 +1,28 @@
+# -*- mode: snippet -*-
+# name: latex-preamble
+# key: preamble
+# --
+\documentclass{article}
+\usepackage{graphicx} 
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsbsy}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage(verbatim)
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\P}{\mathbb{P}}
+\setlength\parindent{0pt}
+
+
+\title{$1}
+\author{Nash Rickert}
+
+\begin{document}
+$0
+\end{document}

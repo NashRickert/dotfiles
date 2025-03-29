@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: big-cap
+# key: cap
+# --
+\bigcap_{$1}$0

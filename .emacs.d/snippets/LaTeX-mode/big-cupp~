@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: big-cupp
+# key: cupp
+# --
+\bigcup_{$1}^{$2}$0
