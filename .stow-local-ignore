@@ -23,4 +23,4 @@ _darcs
 ^/COPYING
 
 # Ignore wallpapers directory
-wallpapers/
+\wallpapers
