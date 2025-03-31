@@ -98,7 +98,7 @@ bindkey -M viins "" history-incremental-search-backward
 #-------------------- aliases --------------------
 
 # alias vim="nvim"
-alias cat="bat"
+# alias cat="bat"
 
 # replace ls with eza
 base_ls="eza --group-directories-first --icons=auto --git -h"

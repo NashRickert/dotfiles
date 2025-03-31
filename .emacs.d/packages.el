@@ -131,6 +131,20 @@
 
   ;; Miscellaneous keybindings
   (evil-define-key 'normal 'global (kbd "<leader> j") 'ace-window)
+
+  (evil-define-key 'normal 'global (kbd "<leader> <up>") 'enlarge-window)
+  (evil-define-key 'normal 'global (kbd "<leader> <down>") 'shrink-window)
+  (evil-define-key 'normal 'global (kbd "<leader> <left>") 'shrink-window-horizontally)
+  (evil-define-key 'normal 'global (kbd "<leader> <right>") 'enlarge-window-horizontally)
+
+  ;; Note that the evil version of these commands allow an argument for the size of splitting
+  ;; And that may be worth using over the base functionality
+  ;; With no argument, they seem to operate as normal
+  (evil-define-key 'normal 'global (kbd "<leader> 0") 'delete-window)
+  (evil-define-key 'normal 'global (kbd "<leader> 1") 'delete-other-windows)
+  (evil-define-key 'normal 'global (kbd "<leader> 2") 'split-window-below)
+  (evil-define-key 'normal 'global (kbd "<leader> 3") 'split-window-right)
+
   
   ;; Keybindings for searching and finding files.
   (evil-define-key 'normal 'global (kbd "<leader> s f") 'consult-find)
@@ -329,8 +343,9 @@
 	(haskell-mode . eglot-ensure)))
 
 ;; Note: wraps around emacs-lsp-booster installed from AUR
+;; Or through crates.io, or through binaries
 ;; Theoretically improves performance
-;; Currently requires manual package installation with package-vc-install
+;; Currently the emacs package itself requires manual installation with package-vc-install
 ;; Theoretically could be automated through this use-package declaration, but I couldn't get it to work
 (use-package eglot-booster
   :after eglot
@@ -505,7 +520,7 @@
 
 ;; Vterm
 (use-package vterm
-  :custom (vterm-shell "/usr/bin/fish"))
+  :custom (vterm-shell "/usr/bin/zsh"))
 
 ;; Ultra Scroll
 ;; Note that this is not on MELPA, so there is one more step involving package-vc-install
