@@ -129,6 +129,10 @@ alias grep="grep --color=auto"
 autoload -U add-zsh-hook
 add-zsh-hook -Uz chpwd (){ print -Pn "\e]2;%2~\a" }
 
+#-------------------- ssh agent --------------------
+# Requires keychain package installed
+eval $(keychain --eval --quiet id_ed25519 cse_481)
+
 #-------------------- syntax highlighting --------------------
 
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
