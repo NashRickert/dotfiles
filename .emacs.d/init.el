@@ -55,6 +55,7 @@
 (setenv "PATH" (concat "/home/nash/.ghcup/bin:" (getenv "PATH")))
 
 (setopt dictionary-server "dict.org")
+(server-start) ;; Done so I can use emacsclient inside of vterm
 
 
 (load "~/.emacs.d/packages.el")
@@ -66,7 +67,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(aas ace-window company docker doom-modeline eglot-booster evil evil-collection evil-magit evil-surround gruvbox-theme haskell-mode helpful lsp-mode lsp-ui magit marginalia projectile sideline-flymake smartparens ultra-scroll vertico vterm which-key yasnippet))
+   '(devdocs aas ace-window company docker doom-modeline eglot-booster evil evil-collection evil-magit evil-surround gruvbox-theme haskell-mode helpful lsp-mode lsp-ui magit marginalia projectile sideline-flymake smartparens ultra-scroll vertico vterm which-key yasnippet))
  '(package-vc-selected-packages
    '((eglot-booster :vc-backend Git :url "https://github.com/jdtsmith/eglot-booster")
      (ultra-scroll :vc-backend Git :url "https://github.com/jdtsmith/ultra-scroll"))))

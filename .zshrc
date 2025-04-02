@@ -99,6 +99,8 @@ bindkey -M viins "" history-incremental-search-backward
 
 # alias vim="nvim"
 # alias cat="bat"
+alias aella="ssh -J nashr2@attu.cs.washington.edu nash@ptc.cs.washington"
+alias e="emacsclient"
 
 # replace ls with eza
 base_ls="eza --group-directories-first --icons=auto --git -h"
@@ -120,6 +122,12 @@ alias lsf="${base_ls} -f"
 alias grep="grep --color=auto"
 # alias egrep="egrep --color=auto"
 # alias fgrep="fgrep --color=auto"
+
+#-------------------- customizations --------------------
+
+# This is done to give the proper title to new vterm terminals
+autoload -U add-zsh-hook
+add-zsh-hook -Uz chpwd (){ print -Pn "\e]2;%2~\a" }
 
 #-------------------- syntax highlighting --------------------
 

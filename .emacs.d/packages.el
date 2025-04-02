@@ -145,6 +145,13 @@
   (evil-define-key 'normal 'global (kbd "<leader> 2") 'split-window-below)
   (evil-define-key 'normal 'global (kbd "<leader> 3") 'split-window-right)
 
+  ;; Shortcut to open a new vterm terminal
+  (evil-define-key 'normal 'global (kbd "<leader> v") 'vterm)
+
+  ;; Shortcut to open devdocs
+  ;; Note that in a buffer, a selection is remembered unless a prefix argument is given
+  (evil-define-key 'normal 'global (kbd "<leader> d") 'devdocs-lookup)
+
   
   ;; Keybindings for searching and finding files.
   (evil-define-key 'normal 'global (kbd "<leader> s f") 'consult-find)
@@ -221,6 +228,8 @@
   (evil-collection-translate-key 'normal 'help-mode-map " " 'nil)
   (with-eval-after-load 'pdf-tools
       (evil-collection-translate-key 'normal 'pdf-view-mode-map " " 'nil))
+  (with-eval-after-load 'devdocs
+      (evil-collection-translate-key 'normal 'devdocs-mode-map " " 'nil))
   (with-eval-after-load 'dired
       (evil-collection-translate-key 'normal 'dired-mode-map " " 'nil)))
 
@@ -416,10 +425,14 @@
   :ensure t
   :hook (LaTeX-mode . turn-on-cdlatex)
   :bind (:map cdlatex-mode-map 
+	      ;; ("|" . nil)
               ("<tab>" . cdlatex-tab))
   :config
   ;; These intended to get parentheses to work, but possibly not necessary
   (setq cdlatex-paired-parens "$[{") 
+  (define-key cdlatex-mode-map  "|" nil)
+  (define-key cdlatex-mode-map  "{" nil)
+  (define-key cdlatex-mode-map  "[" nil)
   (define-key cdlatex-mode-map  "(" nil))
 
 
@@ -488,9 +501,9 @@
   (aas-set-snippets 'LaTeX-mode
     "sigma algebra" '(yas "$\\sigma$-algebra$0")
     "sigma finite" '(yas "$\\sigma$-finite$0")
-    ;; " \\[" '(yas "\\[ $0 \\]")
+    ;; "\\[" '(yas "\\[  $0  \\]")
     :cond #'texmathp ; expand only in math mode
-    ;; " \\{ " '(yas "\\{ $0 \\}")
+    "\\{ " '(yas "\\{ $0 \\}")
     ;; "in" '(yas "\\in$0")
     "sub" '(yas "\\subset$0")
     "m*" '(yas "\\mu^*$0")
@@ -511,16 +524,22 @@
     "cal" '(yas "\\mathcal{$1}$0")
     ;; "int" '(yas "\\int_{$1}^{$2}$0")
     "int" '(yas "\\int$0")
+
+    "||" '(yas "\\|$0\\|")
     "chi" '(yas "\\chi$0")
     "cupp" '(yas "\\bigcup_{$1}^{$2}$0")
     "capp" '(yas "\\bigcap_{$1}^{$2}$0")
     "prod" '(yas "\\prod_{$1}^{$2}$0")
-    "sum" '(yas "\\sum$0")))
-    ;; "sum" '(yas "\\sum_{$1}^{$2}$0")))
+    "left|" '(yas "\\left\\| $0 \\right\\|")
+    ;; "sum" '(yas "\\sum$0")))
+    "sum" '(yas "\\sum_{$1}^{$2}$0")))
 
 ;; Vterm
 (use-package vterm
-  :custom (vterm-shell "/usr/bin/zsh"))
+  :custom
+  ;; Gives a custom name to vterm terminals
+  (vterm-buffer-name-string "vterm %s")
+  (vterm-shell "/usr/bin/zsh"))
 
 ;; Ultra Scroll
 ;; Note that this is not on MELPA, so there is one more step involving package-vc-install
@@ -541,3 +560,10 @@
 (use-package docker
   :ensure t
   :bind ("C-c d" . docker))
+
+
+;; Really nice documentation package
+(use-package devdocs
+  :hook
+  ((python-mode . (lambda () (setq-local devdocs-current-docs '("python~3.13"))))
+  (c-mode . (lambda () (setq-local devdocs-current-docs '("c"))))))
