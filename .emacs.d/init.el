@@ -14,7 +14,6 @@
 (global-visual-line-mode 1)
 (set-fringe-mode 10) ; Sets size of edge fringe
 (column-number-mode t)
-(load-theme 'gruvbox-dark-hard t)
 (setq word-wrap t)
 
 ;; Line Numbers
@@ -49,10 +48,12 @@
 (global-auto-revert-mode 1)
 ;; Winner-Mode: reverse changes in window configuration with C-c <left> and redo with C-c <right>
 (winner-mode 1) 
+(setq-default c-basic-offset 4)
 
 ;; Adds .ghcup/bin to both 'exec-path and "PATH" (those are different things)
 (add-to-list 'exec-path "/home/nash/.ghcup/bin/") 
 (setenv "PATH" (concat "/home/nash/.ghcup/bin:" (getenv "PATH")))
+(setenv "SHELL" "/usr/bin/zsh")
 
 (setopt dictionary-server "dict.org")
 (server-start) ;; Done so I can use emacsclient inside of vterm
@@ -66,6 +67,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("a3a71b922fb6cbf9283884ac8a9109935e04550bcc5d2a05414a58c52a8ffc47" default))
  '(package-selected-packages
    '(devdocs aas ace-window company docker doom-modeline eglot-booster evil evil-collection evil-magit evil-surround gruvbox-theme haskell-mode helpful lsp-mode lsp-ui magit marginalia projectile sideline-flymake smartparens ultra-scroll vertico vterm which-key yasnippet))
  '(package-vc-selected-packages

@@ -13,6 +13,15 @@
 (require 'use-package)
 (setq use-package-always-ensure t) ; When using UP, installs package if not already installed
 
+;; Theme config
+;; (load-theme 'gruvbox-dark-hard t)
+(use-package gruvbox-theme
+  :config
+  (load-theme 'gruvbox-dark-hard t))
+;; (use-package ef-themes
+;;   :ensure t
+;;   :config
+;;   (load-theme 'ef-autumn t))
 
 ;; Minibuffer Completion Frameworks
 (use-package vertico
@@ -356,9 +365,14 @@
 ;; Theoretically improves performance
 ;; Currently the emacs package itself requires manual installation with package-vc-install
 ;; Theoretically could be automated through this use-package declaration, but I couldn't get it to work
+;; Additional note: Only works through tramp if emacs-lsp-booster is installed there.
+;; no-remote-boost t turns it off remotely
 (use-package eglot-booster
   :after eglot
-  :config (eglot-booster-mode))
+  :custom
+  (eglot-booster-no-remote-boost t)
+  :config
+  (eglot-booster-mode))
 
 ;; Specific Language Modes
 (use-package haskell-mode)
@@ -501,7 +515,7 @@
   (aas-set-snippets 'LaTeX-mode
     "sigma algebra" '(yas "$\\sigma$-algebra$0")
     "sigma finite" '(yas "$\\sigma$-finite$0")
-    ;; "\\[" '(yas "\\[  $0  \\]")
+    ;; "\\[" '(yas "\\[ $0  ")
     :cond #'texmathp ; expand only in math mode
     "\\{ " '(yas "\\{ $0 \\}")
     ;; "in" '(yas "\\in$0")
@@ -539,7 +553,10 @@
   :custom
   ;; Gives a custom name to vterm terminals
   (vterm-buffer-name-string "vterm %s")
-  (vterm-shell "/usr/bin/zsh"))
+  (vterm-shell "/usr/bin/zsh")
+  :config
+  (define-key vterm-mode-map (kbd "C-a") #'vterm-send-C-a)
+  (define-key vterm-mode-map (kbd "C-x") #'vterm-send-C-x))
 
 ;; Ultra Scroll
 ;; Note that this is not on MELPA, so there is one more step involving package-vc-install
@@ -567,3 +584,18 @@
   :hook
   ((python-mode . (lambda () (setq-local devdocs-current-docs '("python~3.13"))))
   (c-mode . (lambda () (setq-local devdocs-current-docs '("c"))))))
+
+;; This and the tramp configs are done to allow
+;; Better ssh hopping (the keychain is to sync with an ssh agent)
+;; Super high chance the tramp config stuff is unnecessary
+(use-package keychain-environment
+  :defer 1
+  :config (keychain-refresh-environment)
+  :hook
+  (server-after-make-frame . keychain-refresh-environment))
+
+(use-package tramp
+  :defer t
+  :config
+  (setq tramp-default-method "ssh")
+  (setq tramp-use-ssh-controlmaster-options nil))

@@ -4,6 +4,7 @@
 export EDITOR="nvim"
 export VISUAL="nvim"
 # export BROWSER="firefox-bin"
+export AOSREPO="https://gitlab.cs.washington.edu/simpeter/aos.git"
 
 # change colors of directories listed by ls to light purple 
 LS_COLORS=$LS_COLORS:"di=1;95:" ; export LS_COLORS  
@@ -99,7 +100,8 @@ bindkey -M viins "" history-incremental-search-backward
 
 # alias vim="nvim"
 # alias cat="bat"
-alias aella="ssh -J nashr2@attu.cs.washington.edu nash@ptc.cs.washington"
+# alias aella="ssh -J nashr2@attu.cs.washington.edu nashr2@aella.cs.washington.edu"
+alias ptc="ssh -J nashr2@attu.cs.washington.edu nashr2@ptc.cs.washington.edu"
 alias e="emacsclient"
 
 # replace ls with eza
