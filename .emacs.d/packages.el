@@ -55,6 +55,8 @@
 ;; No keybindings come predefined. I do a couple in the evil-section using a leader keybinding
 ;; Anything I use a lot probably deserves a keybinding
 (use-package consult
+  :config
+  (setq consult-narrow-key "<")
   :init
   (setq xref-show-xrefs-function #'consult-xref)
   (setq xref-show-definitions-function #'consult-xref))
@@ -169,6 +171,11 @@
   (evil-define-key 'normal 'global (kbd "<leader> s r") 'consult-ripgrep)
   (evil-define-key 'normal 'global (kbd "<leader> s h") 'consult-info)
   (evil-define-key 'normal 'global (kbd "<leader> /") 'consult-line)
+
+  (evil-define-key 'normal 'global (kbd "<leader> ?") 'consult-line-multi)
+  (evil-define-key 'normal 'global (kbd "<leader> l") 'consult-goto-line)
+  (evil-define-key 'normal 'global (kbd "<leader> f") 'consult-focus-lines)
+  (evil-define-key 'normal 'global (kbd "<leader> y") 'consult-yank-from-kill-ring)
 
   ;; Dired commands for file management
   (evil-define-key 'normal 'global (kbd "<leader> x d") 'dired)
@@ -373,6 +380,11 @@
   (eglot-booster-no-remote-boost t)
   :config
   (eglot-booster-mode))
+
+;; Should force emacs to use clangd instead of ccls
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '((c++-mode c-mode) "clangd")))
 
 ;; Specific Language Modes
 (use-package haskell-mode)
