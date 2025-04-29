@@ -24,3 +24,5 @@ if [ -d ~/.bashrc.d ]; then
 fi
 unset rc
 . "$HOME/.cargo/env"
+
+[ -f "/home/nash/.ghcup/env" ] && . "/home/nash/.ghcup/env" # ghcup-env

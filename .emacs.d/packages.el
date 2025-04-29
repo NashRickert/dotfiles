@@ -147,6 +147,8 @@
   (evil-define-key 'normal 'global (kbd "<leader> <down>") 'shrink-window)
   (evil-define-key 'normal 'global (kbd "<leader> <left>") 'shrink-window-horizontally)
   (evil-define-key 'normal 'global (kbd "<leader> <right>") 'enlarge-window-horizontally)
+  (evil-define-key 'normal 'global (kbd "<leader> w") 'window-configuration-to-register)
+  (evil-define-key 'normal 'global (kbd "<leader> W") 'jump-to-register)
 
   ;; Note that the evil version of these commands allow an argument for the size of splitting
   ;; And that may be worth using over the base functionality
@@ -550,6 +552,8 @@
     "cal" '(yas "\\mathcal{$1}$0")
     ;; "int" '(yas "\\int_{$1}^{$2}$0")
     "int" '(yas "\\int$0")
+    "..." '(yas "\\cdots$0")
+
 
     "||" '(yas "\\|$0\\|")
     "chi" '(yas "\\chi$0")
@@ -565,10 +569,10 @@
   :custom
   ;; Gives a custom name to vterm terminals
   (vterm-buffer-name-string "vterm %s")
-  (vterm-shell "/usr/bin/zsh")
-  :config
-  (define-key vterm-mode-map (kbd "C-a") #'vterm-send-C-a)
-  (define-key vterm-mode-map (kbd "C-x") #'vterm-send-C-x))
+  (vterm-shell "/usr/bin/zsh"))
+  ;; :config
+  ;; (define-key vterm-mode-map (kbd "C-a") #'vterm-send-C-a)
+  ;; (define-key vterm-mode-map (kbd "C-x") #'vterm-send-C-x))
 
 ;; Ultra Scroll
 ;; Note that this is not on MELPA, so there is one more step involving package-vc-install

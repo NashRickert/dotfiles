@@ -1,5 +1,9 @@
 #-------------------- exports --------------------
 
+# Special CSE 481 names:
+export BFBUILD="${HOME}/aos_proj/build_milestone_1"
+export BFAOS="${HOME}/aos_proj/bf_aos"
+
 # export PATH="$PATH:~/.local/bin/:~/scripts:$HOME/.cargo/bin"
 export EDITOR="nvim"
 export VISUAL="nvim"
@@ -101,7 +105,7 @@ bindkey -M viins "" history-incremental-search-backward
 # alias vim="nvim"
 # alias cat="bat"
 # alias aella="ssh -J nashr2@attu.cs.washington.edu nashr2@aella.cs.washington.edu"
-alias ptc="ssh -J nashr2@attu.cs.washington.edu nashr2@ptc.cs.washington.edu"
+alias ptc="ssh -J nashr2@attu.cs.washington.edu nash@ptc.cs.washington.edu"
 alias e="emacsclient"
 
 # replace ls with eza
