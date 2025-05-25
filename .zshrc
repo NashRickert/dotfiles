@@ -135,6 +135,64 @@ alias grep="grep --color=auto"
 autoload -U add-zsh-hook
 add-zsh-hook -Uz chpwd (){ print -Pn "\e]2;%2~\a" }
 
+# -------------- Vterm configurations (shell side) ------------
+vterm_printf() {
+    if [ -n "$TMUX" ] \
+        && { [ "${TERM%%-*}" = "tmux" ] \
+            || [ "${TERM%%-*}" = "screen" ]; }; then
+        # Tell tmux to pass the escape sequences through
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}
+
+# directory and prompt tracking:
+vterm_prompt_end() {
+    vterm_printf "51;A$(whoami)@$(hostname):$(pwd)"
+}
+setopt PROMPT_SUBST
+PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
+
+# --------- Venv aliases (allow quicker activating and dactivating) -------
+# Quick venv activation
+# type either venv or venv myproject (to activate by name)
+venv() {
+    if [ -z "$1" ]; then
+        # Look for common venv directories in current folder
+        for venv_dir in venv .venv env .env; do
+            if [ -d "$venv_dir" ]; then
+                source "$venv_dir/bin/activate"
+                echo "Activated: $venv_dir"
+                return
+            fi
+        done
+        echo "No virtual environment found in current directory"
+    else
+        # Activate specific venv by name/path
+        if [ -d "$1" ]; then
+            source "$1/bin/activate"
+        elif [ -d "$HOME/venvs/$1" ]; then
+            source "$HOME/venvs/$1/bin/activate"
+        else
+            echo "Virtual environment '$1' not found"
+        fi
+    fi
+}
+
+# Quick deactivation
+# Simply type dvenv
+dvenv() {
+    if [ -n "$VIRTUAL_ENV" ]; then
+        deactivate
+    else
+        echo "No virtual environment is currently active"
+    fi
+}
+
 #-------------------- ssh agent --------------------
 # Requires keychain package installed
 eval $(keychain --eval --quiet id_ed25519 cse_481)

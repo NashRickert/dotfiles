@@ -49,6 +49,7 @@
 ;; Winner-Mode: reverse changes in window configuration with C-c <left> and redo with C-c <right>
 (winner-mode 1) 
 (setq-default c-basic-offset 4)
+(setq-default indent-tabs-mode nil)
 
 ;; Adds .ghcup/bin to both 'exec-path and "PATH" (those are different things)
 (add-to-list 'exec-path "/home/nash/.ghcup/bin/") 

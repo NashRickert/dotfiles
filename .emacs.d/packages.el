@@ -560,6 +560,7 @@
     "cupp" '(yas "\\bigcup_{$1}^{$2}$0")
     "capp" '(yas "\\bigcap_{$1}^{$2}$0")
     "prod" '(yas "\\prod_{$1}^{$2}$0")
+    ;; "<" '(yas "\\langle $0")
     "left|" '(yas "\\left\\| $0 \\right\\|")
     ;; "sum" '(yas "\\sum$0")))
     "sum" '(yas "\\sum_{$1}^{$2}$0")))
@@ -569,6 +570,7 @@
   :custom
   ;; Gives a custom name to vterm terminals
   (vterm-buffer-name-string "vterm %s")
+  (vterm-max-scrollback 10000)
   (vterm-shell "/usr/bin/zsh"))
   ;; :config
   ;; (define-key vterm-mode-map (kbd "C-a") #'vterm-send-C-a)
