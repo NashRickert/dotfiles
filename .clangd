@@ -1,0 +1,5 @@
+InlayHints:
+  Enabled: true
+  ParameterNames: true      # Shows parameter names in function calls
+  DeducedTypes: true        # Shows deduced types (auto, etc.)
+  Designators: false        # Controls array index hints - set to false

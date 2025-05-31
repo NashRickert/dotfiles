@@ -306,7 +306,7 @@
   :custom
   (company-tooltip-align-annotations t)      ;; Align annotations with completions.
   (company-minimum-prefix-length 1)          ;; Trigger completion after typing 1 character
-  (company-idle-delay 0.0)                   ;; Delay before showing completion (adjust as needed)
+  (company-idle-delay 1.0)                   ;; Delay before showing completion (adjust as needed)
   (company-tooltip-maximum-width 50)
   :config
 

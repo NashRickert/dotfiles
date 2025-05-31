@@ -583,7 +583,7 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         -- gopls = {},
-        -- pyright = {}, -- NOTE: I might want pyright here but I get errors, possibly due to python or npm not installed (should be easily fixable)
+        pyright = {}, -- NOTE: I might want pyright here but I get errors, possibly due to python or npm not installed (should be easily fixable)
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
