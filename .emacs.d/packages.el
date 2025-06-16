@@ -14,14 +14,19 @@
 (setq use-package-always-ensure t) ; When using UP, installs package if not already installed
 
 ;; Theme config
-;; (load-theme 'gruvbox-dark-hard t)
-(use-package gruvbox-theme
-  :config
-  (load-theme 'gruvbox-dark-hard t))
+;; (use-package gruvbox-theme
+;;   :config
+;;   (load-theme 'gruvbox-dark-hard t))
+
 ;; (use-package ef-themes
 ;;   :ensure t
 ;;   :config
-;;   (load-theme 'ef-autumn t))
+;;   (load-theme 'ef-dream t))
+
+(use-package modus-themes
+  :ensure t
+  :config
+  (load-theme 'modus-vivendi-deuteranopia t))
 
 ;; Minibuffer Completion Frameworks
 (use-package vertico
@@ -155,8 +160,14 @@
   ;; With no argument, they seem to operate as normal
   (evil-define-key 'normal 'global (kbd "<leader> 0") 'delete-window)
   (evil-define-key 'normal 'global (kbd "<leader> 1") 'delete-other-windows)
-  (evil-define-key 'normal 'global (kbd "<leader> 2") 'split-window-below)
-  (evil-define-key 'normal 'global (kbd "<leader> 3") 'split-window-right)
+;; (lambda () (interactive)(split-window-vertically) (other-window 1)))
+  (evil-define-key 'normal 'global (kbd "<leader> 2") (lambda () (interactive)(split-window-below) (other-window 1)))
+  (evil-define-key 'normal 'global (kbd "<leader> 3") (lambda () (interactive)(split-window-right) (other-window 1)))
+  ;; (evil-define-key 'normal 'global (kbd "<leader> 3") 'split-window-right)
+  ;; (evil-define-key 'normal 'global (kbd "<leader> 2") 'split-window-below)
+  ;; (evil-define-key 'normal 'global (kbd "<leader> 3") 'split-window-right)
+  (evil-define-key 'normal 'global (kbd "<leader> @") 'split-root-window-below)
+  (evil-define-key 'normal 'global (kbd "<leader> #") 'split-root-window-right)
 
   ;; Shortcut to open a new vterm terminal
   (evil-define-key 'normal 'global (kbd "<leader> v") 'vterm)
@@ -176,14 +187,14 @@
 
   (evil-define-key 'normal 'global (kbd "<leader> ?") 'consult-line-multi)
   (evil-define-key 'normal 'global (kbd "<leader> l") 'consult-goto-line)
-  (evil-define-key 'normal 'global (kbd "<leader> f") 'consult-focus-lines)
+  (evil-define-key 'normal 'global (kbd "<leader> g") 'consult-focus-lines)
   (evil-define-key 'normal 'global (kbd "<leader> y") 'consult-yank-from-kill-ring)
 
   ;; Dired commands for file management
   (evil-define-key 'normal 'global (kbd "<leader> x d") 'dired)
   (evil-define-key 'normal 'global (kbd "<leader> x j") 'dired-jump)
-  (evil-define-key 'normal 'global (kbd "<leader> x f") 'find-file)
-  (evil-define-key 'normal 'global (kbd "<leader> x s") 'save-buffer)
+  (evil-define-key 'normal 'global (kbd "<leader> f") 'find-file)
+  (evil-define-key 'normal 'global (kbd "<leader> s s") 'save-buffer)
 
   ;; Buffer management keybindings
   (evil-define-key 'normal 'global (kbd "] b") 'switch-to-next-buffer) ;; Switch to next buffer
@@ -248,6 +259,8 @@
       (evil-collection-translate-key 'normal 'pdf-view-mode-map " " 'nil))
   (with-eval-after-load 'devdocs
       (evil-collection-translate-key 'normal 'devdocs-mode-map " " 'nil))
+  (with-eval-after-load 'image
+      (evil-collection-translate-key 'normal 'devdocs-mode-map " " 'nil))
   (with-eval-after-load 'dired
       (evil-collection-translate-key 'normal 'dired-mode-map " " 'nil)))
 
@@ -306,7 +319,7 @@
   :custom
   (company-tooltip-align-annotations t)      ;; Align annotations with completions.
   (company-minimum-prefix-length 1)          ;; Trigger completion after typing 1 character
-  (company-idle-delay 1.0)                   ;; Delay before showing completion (adjust as needed)
+  (company-idle-delay 0.75)                   ;; Delay before showing completion (adjust as needed)
   (company-tooltip-maximum-width 50)
   :config
 
@@ -329,29 +342,49 @@
   ;; Use of tabs doesn't play nice in latex mode
   (cdlatex-mode . (lambda() (company-mode 0)))) 
 
-
-
-;; LSP-Mode
-;; This is roughly what an LSP-Mode config would look like
-;; Note I need to install necessary lsps on my system (pacman) and then possibly apply in M-x lsp-server-install
-;; Also note for real usage there would be many more options to configure
-;; (use-package lsp-mode
+;; Corfu
+;; (use-package corfu
 ;;   :ensure t
-;;   :defer t
-;;   :hook (;; Replace XXX-mode with concrete major mode (e.g. python-mode)
-;; 	 (python-mode . lsp-deferred)
-;; 	 (c-mode . lsp-deferred)
-;; 	 (haskell-mode . lsp-deferred)
-;; 	 ;; Should auto-disconnect lsp-mode when in tramp-mode (hopefully)
-;; 	 (tramp-mode . (lambda () (when (bound-and-true-p lsp-mode) (lsp-disconnect))))
-;;          (lsp-mode . lsp-enable-which-key-integration)) ;; Integrate with Which Key
-;;   :commands
-;;   (lsp lsp-deferred)
 ;;   :custom
-;;   (lsp-keymap-prefix "C-c l"))                           ;; Set the prefix for LSP commands.
+;;   ;; Configure corfu behavior
+;;   (corfu-cycle t)                    ;; Enable cycling for `corfu-next/previous'
+;;   (corfu-auto t)                     ;; Enable auto completion
+;;   (corfu-auto-prefix 2)              ;; Minimum prefix length for auto completion (like company-minimum-prefix-length)
+;;   (corfu-auto-delay 0.75)            ;; Auto completion delay (like company-idle-delay)
+;;   (corfu-separator ?\s)              ;; Orderless field separator
+;;   ;; (corfu-quit-at-boundary nil)       ;; Never quit at completion boundary
+;;   (corfu-preview-current 'nil)    ;; Disable current candidate preview
+;;   (corfu-on-exact-match nil)         ;; Configure handling of exact matches
+;;   (corfu-scroll-margin 5)            ;; Use scroll margin
+;;   (corfu-count 10)
+;;   ;; Popupinfo settings (built into corfu)
+;;   (corfu-popupinfo-delay '(0 . 0))
+;;   (corfu-popupinfo-hide nil)
 
-;; ;; LSP-UI
-;; (use-package lsp-ui)
+;;   :bind
+;;   (:map corfu-map
+;;         ("TAB" . corfu-complete)     ;; Complete selection (matches your company config)
+;;         ([tab] . corfu-complete)     ;; Complete selection (matches your company config)
+;;         ("C-j" . corfu-next)         ;; Navigate down
+;;         ("C-k" . corfu-previous)     ;; Navigate up
+;;         ("S-TAB" . corfu-previous)   ;; Alternative up navigation
+;;         ([backtab] . corfu-previous) ;; Alternative up navigation
+;;         ("RET" . nil)                ;; Disable RET for completion (similar to your company config)
+;;         ("<return>" . nil)
+;;         ("S-SPC" . corfu-insert-seperator)
+;;         ("C-c d" . corfu-info-documentation)) ;; Show documentation (similar to company-show-doc-buffer)
+
+;;   :init
+;;   (global-corfu-mode)
+;;   (require 'corfu-info)
+
+;;   :hook
+;;   (cdlatex-mode . (lambda() (corfu-mode -1)))
+;;   (corfu-mode . corfu-popupinfo-mode)
+  
+;;   :config
+;;   (add-hook 'cdlatex-mode-hook (lambda () (corfu-mode -1))))
+
 
 ;; Eglot Mode
 ;; Using this for my minimal lsp
@@ -593,8 +626,8 @@
 ;;   (ultra-scroll-mode 1))
 
 (use-package docker
-  :ensure t
-  :bind ("C-c d" . docker))
+  :ensure t)
+  ;; :bind ("C-c d" . docker))
 
 
 ;; Really nice documentation package

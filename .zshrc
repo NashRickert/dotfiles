@@ -109,7 +109,9 @@ alias ptc="ssh -J nashr2@attu.cs.washington.edu nash@ptc.cs.washington.edu"
 alias e="emacsclient"
 
 # replace ls with eza
-base_ls="eza --group-directories-first --icons=auto --git -h"
+# Note we now never show ~ files which might be an issue
+# Except with ls -I "" which overrides the previous -I
+base_ls="eza --group-directories-first --icons=auto --git -h -I '*~'"
 alias ls=$base_ls
 alias lsl="${base_ls} -l"
 # list directories only 

@@ -1,0 +1,8 @@
+BasedOnStyle: Google
+IndentWidth: 4
+UseTab: Never
+BreakBeforeBraces: Attach
+BraceWrapping:
+  BeforeElse: True
+SpaceAfterCStyleCast: True
+ColumnLimit: 90

@@ -48,6 +48,7 @@
 (global-auto-revert-mode 1)
 ;; Winner-Mode: reverse changes in window configuration with C-c <left> and redo with C-c <right>
 (winner-mode 1) 
+
 (setq-default c-basic-offset 4)
 (setq-default indent-tabs-mode nil)
 
@@ -69,12 +70,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("a3a71b922fb6cbf9283884ac8a9109935e04550bcc5d2a05414a58c52a8ffc47" default))
- '(package-selected-packages
-   '(devdocs aas ace-window company docker doom-modeline eglot-booster evil evil-collection evil-magit evil-surround gruvbox-theme haskell-mode helpful lsp-mode lsp-ui magit marginalia projectile sideline-flymake smartparens ultra-scroll vertico vterm which-key yasnippet))
+   '("c5975101a4597094704ee78f89fb9ad872f965a84fb52d3e01b9102168e8dc40"
+     default))
+ '(package-selected-packages nil)
  '(package-vc-selected-packages
-   '((eglot-booster :vc-backend Git :url "https://github.com/jdtsmith/eglot-booster")
-     (ultra-scroll :vc-backend Git :url "https://github.com/jdtsmith/ultra-scroll"))))
+   '((doom-two-tone-themes :vc-backend Git :url
+                           "https://github.com/eliraz-refael/doom-two-tone-themes"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
