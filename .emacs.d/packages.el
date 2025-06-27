@@ -470,6 +470,8 @@
    (LaTeX-mode . preview-larger-previews)
    (TeX-after-compilation-finished . TeX-revert-document-buffer))
   :config
+  (setq LaTeX-indent-level 4)
+  (setq LaTeX-item-indent 0)
   (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
   (setq TeX-source-correlate-mode t)
   (setq TeX-source-correlate-start-server t)

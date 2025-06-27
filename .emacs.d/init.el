@@ -49,6 +49,7 @@
 ;; Winner-Mode: reverse changes in window configuration with C-c <left> and redo with C-c <right>
 (winner-mode 1) 
 
+(setq-default c-electric-pound-behavior '(alignleft))
 (setq-default c-basic-offset 4)
 (setq-default indent-tabs-mode nil)
 
