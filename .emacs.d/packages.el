@@ -652,3 +652,14 @@
   :config
   (setq tramp-default-method "ssh")
   (setq tramp-use-ssh-controlmaster-options nil))
+
+
+;; Dependencies for the pomo-cat package
+(use-package posframe)
+(quelpa '(popon :fetcher git
+                :url "https://codeberg.org/akib/emacs-popon.git"))
+
+;; Just a silly package that starts a pomodoro times
+(use-package pomo-cat
+  :vc ( :url "https://github.com/kn66/pomo-cat.el"
+        :rev :newest))

@@ -50,19 +50,22 @@
 (winner-mode 1) 
 
 (setq-default c-electric-pound-behavior '(alignleft))
-(setq-default c-basic-offset 4)
-(setq-default indent-tabs-mode nil)
+(setq c-default-style "linux")
+;; (setq-default c-basic-offset 4)
+;; (setq-default indent-tabs-mode nil)
 
 ;; Adds .ghcup/bin to both 'exec-path and "PATH" (those are different things)
 (add-to-list 'exec-path "/home/nash/.ghcup/bin/") 
 (setenv "PATH" (concat "/home/nash/.ghcup/bin:" (getenv "PATH")))
 (setenv "SHELL" "/usr/bin/zsh")
+(setq shell-file-name "/usr/bin/zsh")
 
 (setopt dictionary-server "dict.org")
 (server-start) ;; Done so I can use emacsclient inside of vterm
 
 
 (load "~/.emacs.d/packages.el")
+(load "~/.emacs.d/functions.el")
 
 
 (custom-set-variables
@@ -73,10 +76,18 @@
  '(custom-safe-themes
    '("c5975101a4597094704ee78f89fb9ad872f965a84fb52d3e01b9102168e8dc40"
      default))
- '(package-selected-packages nil)
+ '(package-selected-packages
+   '(aas ace-window auctex cdlatex company corfu devdocs docker
+	 doom-modeline ef-themes eglot-booster embark-consult
+	 evil-collection evil-surround gruvbox-theme haskell-mode
+	 helpful keychain-environment magit marginalia modus-themes
+	 orderless pdf-tools pomo-cat popon projectile quelpa
+	 rainbow-delimiters sideline-flymake vertico vterm which-key
+	 yasnippet))
  '(package-vc-selected-packages
-   '((doom-two-tone-themes :vc-backend Git :url
-                           "https://github.com/eliraz-refael/doom-two-tone-themes"))))
+   '((pomo-cat :vc-backend Git :url "https://github.com/kn66/pomo-cat.el")
+     (doom-two-tone-themes :vc-backend Git :url
+			   "https://github.com/eliraz-refael/doom-two-tone-themes"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -1,0 +1,20 @@
+defaultIndent: "  "
+
+# Be more explicit about what gets indented
+# indentRules:
+#     document: "  "
+#     section: "  "
+#     subsection: "  "
+#     subsubsection: "  "
+#     item: "  "
+#     
+# # Also specify for environments
+# environments:
+#     itemize: "  "
+#     enumerate: "  "
+#     description: "  "
+
+# Enable when comfortable
+# onlyOneBackUp: 1
+
+maxNumberOfBackUps: 5
