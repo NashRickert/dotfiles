@@ -1,4 +1,4 @@
-defaultIndent: "  "
+defaultIndent: "    "
 
 # Be more explicit about what gets indented
 # indentRules:
@@ -15,6 +15,6 @@ defaultIndent: "  "
 #     description: "  "
 
 # Enable when comfortable
-# onlyOneBackUp: 1
+onlyOneBackUp: 1
 
-maxNumberOfBackUps: 5
+# maxNumberOfBackUps: 2

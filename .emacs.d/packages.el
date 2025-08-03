@@ -13,20 +13,45 @@
 (require 'use-package)
 (setq use-package-always-ensure t) ; When using UP, installs package if not already installed
 
-;; Theme config
-;; (use-package gruvbox-theme
-;;   :config
-;;   (load-theme 'gruvbox-dark-hard t))
-
-;; (use-package ef-themes
-;;   :ensure t
-;;   :config
-;;   (load-theme 'ef-dream t))
-
 (use-package modus-themes
   :ensure t
   :config
   (load-theme 'modus-vivendi-deuteranopia t))
+
+
+(use-package dired
+  :ensure nil
+  :custom
+  (dired-kill-when-opening-new-dired-buffer t)
+  (dired-listing-switches "-lah --group-directories-first"))
+
+(use-package isearch
+  :ensure nil
+  :config
+  (setq lazy-count-prefix-format "(%s/%s) ")
+  ;; searches across whitespace
+  ;; if I want only exact matches across white space (in contrast to
+  ;; consult-line), then remove this
+  (setq search-whitespace-regexp ".*?") 
+  (setq isearch-lazy-count t))
+
+
+(use-package org
+  :ensure nil
+  :defer t)
+
+;; Note that using treesitter as default may cause some issues with hooking into other modes
+;; eg settings for c-mode don't apply to c-ts-mode automatically
+;; will need to resolve issues as they come up
+(use-package treesit-auto
+  :ensure t
+  :after emacs
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode t))
+
 
 ;; Minibuffer Completion Frameworks
 (use-package vertico
@@ -37,7 +62,7 @@
 	("C-j" . vertico-next)
 	("C-k" . vertico-previous))
   :custom
-  (vertico-resize t)) 
+  (vertico-resize t))
 
 (use-package marginalia
   ; I believe this adjusts level of annotation
@@ -52,9 +77,6 @@
   (completion-category-default nil) ; orderless is used by default
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
-;; Note: I tried to keep the Consult and Embark implementations as minimalistic as possible
-;; The githubs give slightly more expansive configs that can serve as inspiration
-;; Also note Consult has a ton of commands and there is probably a lot to learn
 
 ;; Consult
 ;; No keybindings come predefined. I do a couple in the evil-section using a leader keybinding
@@ -79,198 +101,21 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+(use-package eldoc-box
+  :ensure t
+  :defer t)
 
-
-;; Doom Modeline
-(use-package doom-modeline
-  :custom
-  (doom-modeline-project-detection 'project)
-  (doom-modeline-buffer-name t)
-  :init (doom-modeline-mode 1))
-
-
-;; Rainbow Delimiters
-(use-package rainbow-delimiters
-  :hook
-  (prog-mode . rainbow-delimiters-mode)
-  (LaTeX-mode . rainbow-delimiters-mode)
-  (text-mode . rainbow-delimiters-mode))
-
-
-;; Which-Key
-(use-package which-key
+;; Note: C eldoc stuff is very minimalistic (eg no fields displayed for structs)
+;; Unsure how I could fix this, or if it's eldoc's fault
+(use-package eldoc
+  :ensure nil                                ;; This is built-in, no need to fetch it.
+  :config
+  (setq eldoc-idle-delay 0.5)                  ;; Automatically fetch doc help
+  (setq eldoc-echo-area-use-multiline-p nil) ;; We use the "K" floating help instead
+                                             ;; set to t if you want docs on the echo area
+  (setq eldoc-echo-area-display-truncation-message nil)
   :init
-  (which-key-mode)
-  :config
-  (setq which-key-idle-delay 0.20))
-
-;; Helpful
-;; Should remap the most important help commands to helpful
-(use-package helpful
-  :bind
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . helpful-variable)
-  ([remap describe-function] . helpful-callable)
-  ([remap describe-key] . helpful-key))
-
-;; Evil Mode
-(use-package evil
-  :init
-  (setq evil-want-integration t) ;; important
-  (setq evil-want-keybinding nil) ;; applies evil to other modes
-  ;; Note that these 'want' settings are for overriding
-  ;; the existing emacs keybindings with the evil mode ones
-  ;; (Or turns some default ones off with nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  :config
-  (evil-mode 1)
-  (evil-set-undo-system 'undo-redo)
-  ;; Evil mode overrides embark-act otherwise
-  (define-key evil-normal-state-map (kbd "C-.") 'embark-act)
-  ;; Let C-g exit insert mode too
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  ;; Ret makes new line and stays in normal mode
-  (define-key evil-normal-state-map (kbd "RET") (lambda () (interactive) (evil-open-below 1) (evil-normal-state)))
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-
-  (setq evil-want-fine-undo t)
-  (setq evil-leader/in-all-states t)
-
-  (evil-set-leader 'normal (kbd "SPC"))
-  (evil-set-leader 'visual (kbd "SPC"))
-
-  ;; Note: I copped most/all of these keybindings from emacs-kick
-  ;; A lot of them overlaod existing keybindings with a leader key
-  ;; But a lot of them provide keybindings to things that don't have them, mainly the consult commands
-
-  ;; Miscellaneous keybindings
-  (evil-define-key 'normal 'global (kbd "<leader> j") 'ace-window)
-
-  (evil-define-key 'normal 'global (kbd "<leader> <up>") 'enlarge-window)
-  (evil-define-key 'normal 'global (kbd "<leader> <down>") 'shrink-window)
-  (evil-define-key 'normal 'global (kbd "<leader> <left>") 'shrink-window-horizontally)
-  (evil-define-key 'normal 'global (kbd "<leader> <right>") 'enlarge-window-horizontally)
-  (evil-define-key 'normal 'global (kbd "<leader> w") 'window-configuration-to-register)
-  (evil-define-key 'normal 'global (kbd "<leader> W") 'jump-to-register)
-
-  ;; Note that the evil version of these commands allow an argument for the size of splitting
-  ;; And that may be worth using over the base functionality
-  ;; With no argument, they seem to operate as normal
-  (evil-define-key 'normal 'global (kbd "<leader> 0") 'delete-window)
-  (evil-define-key 'normal 'global (kbd "<leader> 1") 'delete-other-windows)
-;; (lambda () (interactive)(split-window-vertically) (other-window 1)))
-  (evil-define-key 'normal 'global (kbd "<leader> 2") (lambda () (interactive)(split-window-below) (other-window 1)))
-  (evil-define-key 'normal 'global (kbd "<leader> 3") (lambda () (interactive)(split-window-right) (other-window 1)))
-  ;; (evil-define-key 'normal 'global (kbd "<leader> 3") 'split-window-right)
-  ;; (evil-define-key 'normal 'global (kbd "<leader> 2") 'split-window-below)
-  ;; (evil-define-key 'normal 'global (kbd "<leader> 3") 'split-window-right)
-  (evil-define-key 'normal 'global (kbd "<leader> @") 'split-root-window-below)
-  (evil-define-key 'normal 'global (kbd "<leader> #") 'split-root-window-right)
-
-  ;; Shortcut to open a new vterm terminal
-  (evil-define-key 'normal 'global (kbd "<leader> v") 'vterm)
-
-  ;; Shortcut to open devdocs
-  ;; Note that in a buffer, a selection is remembered unless a prefix argument is given
-  (evil-define-key 'normal 'global (kbd "<leader> d") 'devdocs-lookup)
-
-  
-  ;; Keybindings for searching and finding files.
-  (evil-define-key 'normal 'global (kbd "<leader> s f") 'consult-find)
-  (evil-define-key 'normal 'global (kbd "<leader> s g") 'consult-grep)
-  (evil-define-key 'normal 'global (kbd "<leader> s G") 'consult-git-grep)
-  (evil-define-key 'normal 'global (kbd "<leader> s r") 'consult-ripgrep)
-  (evil-define-key 'normal 'global (kbd "<leader> s h") 'consult-info)
-  (evil-define-key 'normal 'global (kbd "<leader> /") 'consult-line)
-
-  (evil-define-key 'normal 'global (kbd "<leader> ?") 'consult-line-multi)
-  (evil-define-key 'normal 'global (kbd "<leader> l") 'consult-goto-line)
-  (evil-define-key 'normal 'global (kbd "<leader> g") 'consult-focus-lines)
-  (evil-define-key 'normal 'global (kbd "<leader> y") 'consult-yank-from-kill-ring)
-
-  ;; Dired commands for file management
-  (evil-define-key 'normal 'global (kbd "<leader> x d") 'dired)
-  (evil-define-key 'normal 'global (kbd "<leader> x j") 'dired-jump)
-  (evil-define-key 'normal 'global (kbd "<leader> f") 'find-file)
-  (evil-define-key 'normal 'global (kbd "<leader> s s") 'save-buffer)
-
-  ;; Buffer management keybindings
-  (evil-define-key 'normal 'global (kbd "] b") 'switch-to-next-buffer) ;; Switch to next buffer
-  (evil-define-key 'normal 'global (kbd "[ b") 'switch-to-prev-buffer) ;; Switch to previous buffer
-  (evil-define-key 'normal 'global (kbd "<leader> b i") 'consult-buffer) ;; Open consult buffer list
-  (evil-define-key 'normal 'global (kbd "<leader> b b") 'ibuffer) ;; Open Ibuffer
-  (evil-define-key 'normal 'global (kbd "<leader> b d") 'kill-current-buffer) ;; Kill current buffer
-  (evil-define-key 'normal 'global (kbd "<leader> b k") 'kill-current-buffer) ;; Kill current buffer
-  (evil-define-key 'normal 'global (kbd "<leader> b x") 'kill-current-buffer) ;; Kill current buffer
-  (evil-define-key 'normal 'global (kbd "<leader> b s") 'save-buffer) ;; Save buffer
-  (evil-define-key 'normal 'global (kbd "<leader> b l") 'consult-buffer) ;; Consult buffer
-  (evil-define-key 'normal 'global (kbd "<leader>SPC") 'consult-buffer) ;; Consult buffer
-
-  ;; Project management keybindings
-  (evil-define-key 'normal 'global (kbd "<leader> p b") 'consult-project-buffer) ;; Consult project buffer
-  (evil-define-key 'normal 'global (kbd "<leader> p p") 'project-switch-project) ;; Switch project
-  (evil-define-key 'normal 'global (kbd "<leader> p f") 'project-find-file) ;; Find file in project
-  (evil-define-key 'normal 'global (kbd "<leader> p g") 'project-find-regexp) ;; Find regexp in project
-  (evil-define-key 'normal 'global (kbd "<leader> p k") 'project-kill-buffers) ;; Kill project buffers
-  (evil-define-key 'normal 'global (kbd "<leader> p D") 'project-dired) ;; Dired for project
-
-  ;; Yank from kill ring
-  ;; (evil-define-key 'normal 'global (kbd "P") 'consult-yank-from-kill-ring)
-  (evil-define-key 'normal 'global (kbd "<leader> P") 'consult-yank-from-kill-ring)
-
-  ;; Embark actions for contextual commands
-  (evil-define-key 'normal 'global (kbd "<leader> .") 'embark-act)
-
-  ;; Help keybindings
-  (evil-define-key 'normal 'global (kbd "<leader> h m") 'describe-mode) ;; Describe current mode
-  (evil-define-key 'normal 'global (kbd "<leader> h f") 'describe-function) ;; Describe function
-  (evil-define-key 'normal 'global (kbd "<leader> h v") 'describe-variable) ;; Describe variable
-  (evil-define-key 'normal 'global (kbd "<leader> h k") 'describe-key) ;; Describe key
-
-  ;; Tab navigation
-  (evil-define-key 'normal 'global (kbd "] t") 'tab-next) ;; Go to next tab
-  (evil-define-key 'normal 'global (kbd "[ t") 'tab-previous) ;; Go to previous tab
-
-  ;; Commenting functionality for single and multiple lines
-  (evil-define-key 'normal 'global (kbd "gcc")
-    (lambda ()
-      (interactive)
-      (if (not (use-region-p))
-          (comment-or-uncomment-region (line-beginning-position) (line-end-position)))))
-  
-  (evil-define-key 'visual 'global (kbd "gc")
-    (lambda ()
-      (interactive)
-      (if (use-region-p)
-          (comment-or-uncomment-region (region-beginning) (region-end))))))
-
-(use-package evil-collection
-  :after
-  evil
-  :config
-  (evil-collection-init)
-
-  ;; Note with-eval-after-load to make sure changes are only applied after map is loaded
-  ;; Also note each call needs its own with-eval-after-load call
-  (evil-collection-translate-key 'normal 'help-mode-map " " 'nil)
-  (with-eval-after-load 'pdf-tools
-      (evil-collection-translate-key 'normal 'pdf-view-mode-map " " 'nil))
-  (with-eval-after-load 'devdocs
-      (evil-collection-translate-key 'normal 'devdocs-mode-map " " 'nil))
-  (with-eval-after-load 'image
-      (evil-collection-translate-key 'normal 'devdocs-mode-map " " 'nil))
-  (with-eval-after-load 'dired
-      (evil-collection-translate-key 'normal 'dired-mode-map " " 'nil)))
-
-
-;; Evil Surround
-;; Note that this provides another way to surround in visual mode
-;; Aside from the M-({[ keybindings I defined
-(use-package evil-surround
-  :config
-  (global-evil-surround-mode 1))
+  (global-eldoc-mode))
 
 
 ;; Projectile
@@ -284,31 +129,14 @@
   ;; First thing on project switch is to open dired
   (setq projectile-switch-project-action #'projectile-dired))
 
+(load "~/.emacs.d/evil.el")
+(load "~/.emacs.d/basic.el")
 
 ;; Magit
 (use-package magit)
   ;; This would make magit open its buffer in the same window by default
   ;; :custom
   ;; (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
-
-
-;; Ace-Window
-(use-package ace-window
-  :bind ("M-o" . 'ace-window)
-  :init
-  ;; (setq aw-dispatch-always nil)
-  (setq aw-minibuffer-flag t)
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
-
-
-;; YASnippet
-;; Karthink does something weird with warning which I ignore at my own peril
-(use-package yasnippet
-  :config
-  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-  (yas-global-mode 1)
-  ;; Allow snippets in side of snippets
-  (setq yas-triggers-in-field t))
 
 
 ;; Company
@@ -342,48 +170,37 @@
   ;; Use of tabs doesn't play nice in latex mode
   (cdlatex-mode . (lambda() (company-mode 0)))) 
 
+;; I cannot for the life of me get corfu to be work satisfyingly
 ;; Corfu
 ;; (use-package corfu
 ;;   :ensure t
+;;   :defer t
 ;;   :custom
-;;   ;; Configure corfu behavior
-;;   (corfu-cycle t)                    ;; Enable cycling for `corfu-next/previous'
-;;   (corfu-auto t)                     ;; Enable auto completion
-;;   (corfu-auto-prefix 2)              ;; Minimum prefix length for auto completion (like company-minimum-prefix-length)
-;;   (corfu-auto-delay 0.75)            ;; Auto completion delay (like company-idle-delay)
-;;   (corfu-separator ?\s)              ;; Orderless field separator
-;;   ;; (corfu-quit-at-boundary nil)       ;; Never quit at completion boundary
-;;   (corfu-preview-current 'nil)    ;; Disable current candidate preview
-;;   (corfu-on-exact-match nil)         ;; Configure handling of exact matches
-;;   (corfu-scroll-margin 5)            ;; Use scroll margin
+;;   (corfu-cycle t)
+;;   (corfu-auto nil)                       ;; Only completes when hitting TAB
+;;   (corfu-preview-current 'nil)
 ;;   (corfu-count 10)
-;;   ;; Popupinfo settings (built into corfu)
-;;   (corfu-popupinfo-delay '(0 . 0))
-;;   (corfu-popupinfo-hide nil)
-
+;;   (corfu-auto-prefix 2)                  ;; Trigger completion after typing 1 character
+;;   (corfu-auto-delay 0.75)
+;;   (corfu-quit-no-match t)                ;; Quit popup if no match
+;;   (corfu-scroll-margin 5)                ;; Margin when scrolling completions
+;;   (corfu-max-width 50)                   ;; Maximum width of completion popup
+;;   (corfu-min-width 50)                   ;; Minimum width of completion popup
+;;   (corfu-popupinfo-delay 0.5)            ;; Delay before showing documentation popup
 ;;   :bind
 ;;   (:map corfu-map
 ;;         ("TAB" . corfu-complete)     ;; Complete selection (matches your company config)
 ;;         ([tab] . corfu-complete)     ;; Complete selection (matches your company config)
 ;;         ("C-j" . corfu-next)         ;; Navigate down
 ;;         ("C-k" . corfu-previous)     ;; Navigate up
-;;         ("S-TAB" . corfu-previous)   ;; Alternative up navigation
-;;         ([backtab] . corfu-previous) ;; Alternative up navigation
 ;;         ("RET" . nil)                ;; Disable RET for completion (similar to your company config)
 ;;         ("<return>" . nil)
-;;         ("S-SPC" . corfu-insert-seperator)
-;;         ("C-c d" . corfu-info-documentation)) ;; Show documentation (similar to company-show-doc-buffer)
-
+;;         ("C-c d" . corfu-info-documentation)) ;; Show documentation (similar to company-show-doc-buffer
+;;   :hook
+;;   (cdlatex-mode . (lambda() (corfu-mode 0)))
 ;;   :init
 ;;   (global-corfu-mode)
-;;   (require 'corfu-info)
-
-;;   :hook
-;;   (cdlatex-mode . (lambda() (corfu-mode -1)))
-;;   (corfu-mode . corfu-popupinfo-mode)
-  
-;;   :config
-;;   (add-hook 'cdlatex-mode-hook (lambda () (corfu-mode -1))))
+;;   (corfu-popupinfo-mode t))
 
 
 ;; Eglot Mode
@@ -399,6 +216,9 @@
 (setq flymake-show-diagnostics-at-end-of-line nil) 
 :hook ((python-mode . eglot-ensure)
 	(c-mode . eglot-ensure)
+	(c-ts-mode . eglot-ensure)
+	(java-ts-mode . eglot-ensure)
+	(python-ts-mode . eglot-ensure)
 	(java-mode . eglot-ensure)
 	(haskell-mode . eglot-ensure)))
 
@@ -597,19 +417,8 @@
     "prod" '(yas "\\prod_{$1}^{$2}$0")
     ;; "<" '(yas "\\langle $0")
     "left|" '(yas "\\left\\| $0 \\right\\|")
-    ;; "sum" '(yas "\\sum$0")))
     "sum" '(yas "\\sum_{$1}^{$2}$0")))
 
-;; Vterm
-(use-package vterm
-  :custom
-  ;; Gives a custom name to vterm terminals
-  (vterm-buffer-name-string "vterm %s")
-  (vterm-max-scrollback 10000)
-  (vterm-shell "/usr/bin/zsh"))
-  ;; :config
-  ;; (define-key vterm-mode-map (kbd "C-a") #'vterm-send-C-a)
-  ;; (define-key vterm-mode-map (kbd "C-x") #'vterm-send-C-x))
 
 ;; Ultra Scroll
 ;; Note that this is not on MELPA, so there is one more step involving package-vc-install
@@ -627,20 +436,12 @@
 ;;   :config
 ;;   (ultra-scroll-mode 1))
 
-(use-package docker
-  :ensure t)
-  ;; :bind ("C-c d" . docker))
 
-
-;; Really nice documentation package
-(use-package devdocs
-  :hook
-  ((python-mode . (lambda () (setq-local devdocs-current-docs '("python~3.13"))))
-  (c-mode . (lambda () (setq-local devdocs-current-docs '("c"))))))
 
 ;; This and the tramp configs are done to allow
 ;; Better ssh hopping (the keychain is to sync with an ssh agent)
 ;; Super high chance the tramp config stuff is unnecessary
+;; Also can remove this stuff if I don't use it for a while
 (use-package keychain-environment
   :defer 1
   :config (keychain-refresh-environment)
@@ -652,14 +453,3 @@
   :config
   (setq tramp-default-method "ssh")
   (setq tramp-use-ssh-controlmaster-options nil))
-
-
-;; Dependencies for the pomo-cat package
-(use-package posframe)
-(quelpa '(popon :fetcher git
-                :url "https://codeberg.org/akib/emacs-popon.git"))
-
-;; Just a silly package that starts a pomodoro times
-(use-package pomo-cat
-  :vc ( :url "https://github.com/kn66/pomo-cat.el"
-        :rev :newest))

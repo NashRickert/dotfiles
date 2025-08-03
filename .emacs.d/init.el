@@ -63,6 +63,22 @@
 (setopt dictionary-server "dict.org")
 (server-start) ;; Done so I can use emacsclient inside of vterm
 
+(setq use-short-answers t)
+(setq auto-save-default nil)
+;; Make these buffer types appear in the bottom 25% of window
+;; Good to note that I can add other types myself using this template
+(add-to-list 'display-buffer-alist
+	    '("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|[Hh]elp\\|Messages\\|Bookmark List\\|Ibuffer\\|Occur\\|eldoc.*\\)\\*"
+	    (display-buffer-in-side-window)
+	    (window-height . 0.25)
+	    (side . bottom)
+	    (slot . 0))
+
+	    '("\\*\\(Flymake diagnostics\\|xref\\|ivy\\|Swiper\\|Completions\\)"
+	    (display-buffer-in-side-window)
+	    (window-height . 0.25)
+	    (side . bottom)
+	    (slot . 1)))
 
 (load "~/.emacs.d/packages.el")
 (load "~/.emacs.d/functions.el")
@@ -76,14 +92,7 @@
  '(custom-safe-themes
    '("c5975101a4597094704ee78f89fb9ad872f965a84fb52d3e01b9102168e8dc40"
      default))
- '(package-selected-packages
-   '(aas ace-window auctex cdlatex company corfu devdocs docker
-	 doom-modeline ef-themes eglot-booster embark-consult
-	 evil-collection evil-surround gruvbox-theme haskell-mode
-	 helpful keychain-environment magit marginalia modus-themes
-	 orderless pdf-tools pomo-cat popon projectile quelpa
-	 rainbow-delimiters sideline-flymake vertico vterm which-key
-	 yasnippet))
+ '(package-selected-packages nil)
  '(package-vc-selected-packages
    '((pomo-cat :vc-backend Git :url "https://github.com/kn66/pomo-cat.el")
      (doom-two-tone-themes :vc-backend Git :url

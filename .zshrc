@@ -121,7 +121,10 @@ alias e="emacsclient"
 # replace ls with eza
 # Note we now never show ~ files which might be an issue
 # Except with ls -I "" which overrides the previous -I
-base_ls="eza --group-directories-first --icons=auto --git -h -I '*~'"
+# base_ls="eza --group-directories-first --icons=auto --git -h -I '*~'
+
+# Ignore some latex byproducts
+base_ls="eza --group-directories-first --icons=auto --git -h -I '*~|*.aux|*.out|*.toc|*.synctex.gz|*.synctex|*.nav|*.snm|*.vrb|*.bbl|*.blg|*.bcf|*.run.xml|*.pyg'"
 alias ls=$base_ls
 alias lsl="${base_ls} -l"
 # list directories only 
