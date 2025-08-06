@@ -39,6 +39,7 @@
 (setq mu4e-contexts
       `(,(make-mu4e-context
 	  :name "yahoo-nash"
+	  ;; Might need to change this to also check against from, cc, bcc fields to make sure it's right it :to is not robust enough
 	  :match-func (lambda (msg)
 			(when msg
 			  (mu4e-message-contact-field-matches msg
@@ -50,12 +51,17 @@
 	    (mu4e-message "Leaving nashrickert@yahoo.com context")
 	    (mu4e-clear-caches))
 	  :vars '((user-mail-address . "nashrickert@yahoo.com")
-		  (mu4e-mu-home . "~/.mu/nash-yahoo")
+		  ;; (mu4e-mu-home . "~/.mu/nash-yahoo")
+                  (mu4e-maildir . "~/Mail")
+                  (mu4e-refile-folder . "/nash-yahoo/archive")
+                  (mu4e-sent-folder . "/nash-yahoo/sent")
+                  (mu4e-drafts-folder . "/nash-yahoo/drafts")
+                  (mu4e-trash-folder . "/nash-yahoo/trash")
 		  (mu4e-maildir-shortcuts .
-					 (("/drafts" . ?d)
-			  		   ("/sent" . ?w)
-			  		   ("/trash" . ?t)
-			  		   ("/inbox" . ?i)))
+					  (("/nash-yahoo/inbox" . ?i)
+			  		   ("/nash-yahoo/trash" . ?t)
+			  		   ("/nash-yahoo/sent" . ?s)
+					   ("/nash-yahoo/drafts" . ?d)))
 		  (user-full-name . "Nash Rickert")))
       ,(make-mu4e-context
 	  :name "gmail-nash"
@@ -70,15 +76,21 @@
 	    (mu4e-message "Leaving nash.rickert@gmail.com context")
 	    (mu4e-clear-caches))
 	  :vars '((user-mail-address . "nash.rickert@gmail.com")
-		  (mu4e-mu-home . "~/.mu/nash-gmail")
+		  ;; (mu4e-mu-home . "~/.mu/nash-gmail")
+		  (mu4e-maildir . "~/Mail")
+                  (mu4e-refile-folder . "/nash-gmail/archive")
+                  (mu4e-sent-folder . "/nash-gmail/sent")
+                  (mu4e-drafts-folder . "/nash-gmail/drafts")
+                  (mu4e-trash-folder . "/nash-gmail/trash")
 		  (mu4e-maildir-shortcuts .
-					 (("/drafts" . ?d)
-			  		   ("/sent" . ?w)
-			  		   ("/starred" . ?s)
-			  		   ("/all" . ?a)
-			  		   ("/trash" . ?t)
-			  		   ("/inbox" . ?i)))
+					  (("/nash-gmail/inbox" . ?i)
+			  		   ("/nash-gmail/trash" . ?t)
+			  		   ("/nash-gmail/sent" . ?s)
+					   ("/nash-gmail/drafts" . ?d)
+			  		   ("/nash-gmail/starred" . ?S)
+			  		   ("/nash-gmail/all" . ?a)))
 		  (user-full-name . "Nash Rickert")))))
 
+;; Might want to change this
 (setq mu4e-context-policy 'ask)
 (setq mu4e-compose-context-policy 'ask)
