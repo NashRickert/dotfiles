@@ -36,6 +36,7 @@
 
   ;; Miscellaneous keybindings
   (evil-define-key 'normal 'global (kbd "<leader> j") 'ace-window)
+  (evil-define-key 'normal 'global (kbd "<leader> m") 'mu4e)
 
   (evil-define-key 'normal 'global (kbd "<leader> <up>") 'enlarge-window)
   (evil-define-key 'normal 'global (kbd "<leader> <down>") 'shrink-window)
@@ -164,12 +165,14 @@
   ;; Note with-eval-after-load to make sure changes are only applied after map is loaded
   ;; Also note each call needs its own with-eval-after-load call
   (evil-collection-translate-key 'normal 'help-mode-map " " 'nil)
+  (with-eval-after-load 'mu4e
+      (evil-collection-translate-key 'normal 'mu4e-view-mode-map " " 'nil))
   (with-eval-after-load 'pdf-tools
       (evil-collection-translate-key 'normal 'pdf-view-mode-map " " 'nil))
   (with-eval-after-load 'devdocs
       (evil-collection-translate-key 'normal 'devdocs-mode-map " " 'nil))
   (with-eval-after-load 'image
-      (evil-collection-translate-key 'normal 'devdocs-mode-map " " 'nil))
+      (evil-collection-translate-key 'normal 'image-mode-map " " 'nil))
   (with-eval-after-load 'dired
       (evil-collection-translate-key 'normal 'dired-mode-map " " 'nil)))
 
