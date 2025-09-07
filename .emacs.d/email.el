@@ -13,6 +13,7 @@
 (setq mu4e-attachment-dir "~/Downloads")
 
 ;; For now, makes the get mail command update all
+;; Does this need to include mu index?
 (setq mu4e-get-mail-command "mbsync --all")
 
 

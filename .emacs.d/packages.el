@@ -16,7 +16,9 @@
 (use-package modus-themes
   :ensure t
   :config
-  (load-theme 'modus-vivendi-deuteranopia t))
+  (load-theme 'modus-vivendi-tinted t))
+
+;; modus-vivendi-tinted, modus-operandi-tinted, modus-vivendi-deuteranopia
 
 
 (use-package dired
@@ -59,6 +61,8 @@
   (vertico-mode)
   :bind
   (:map vertico-map
+	("C-d" . (lambda () (interactive) (vertico-next 5)))
+	("C-u" . (lambda () (interactive) (vertico-previous 5)))
 	("C-j" . vertico-next)
 	("C-k" . vertico-previous))
   :custom
@@ -76,6 +80,43 @@
   (completion-styles '(orderless basic))
   (completion-category-default nil) ; orderless is used by default
   (completion-category-overrides '((file (styles basic partial-completion)))))
+
+	
+
+;; Don't know how useful exactly this is
+(use-package prescient
+  :custom
+  (prescient-aggressive-file-save t)
+  (prescient-sort-length-enable nil)
+  (prescient-sort-full-matches-first t)
+  (prescient-history-length 200)
+  (prescient-frequency-decay 0.997)
+  (prescient-frequency-threshold 0.05)
+  :config
+  (prescient-persist-mode 1))
+
+(use-package vertico-prescient
+  :demand t
+  :after vertico prescient
+  :custom
+  ;; default values
+  (vertico-prescient-enable-sorting t)
+  (vertico-prescient-override-sorting nil) ; Don't override `display-sort-function'
+
+  ;; Filtering
+  (vertico-prescient-enable-filtering nil) ; We want orderless to do the filtering
+  :config
+  (vertico-prescient-mode 1))
+
+(use-package company-prescient
+  :demand t
+  :after company prescient
+  :custom
+  ;; defaults
+  (company-prescient-enable-sorting t)
+  (company-prescient-override-sorting nil) ; Don't override `display-sort-function'
+  :config
+  (company-prescient-mode 1))
 
 
 ;; Consult
@@ -295,7 +336,10 @@
   (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
   (setq TeX-source-correlate-mode t)
   (setq TeX-source-correlate-start-server t)
-  (setq LaTeX-electric-left-right-brace t)
+  ;; This setting makes \left ( automatically insert the right part (same for other delimiters)
+  ;; However, it also automatically expands \{ and \[ which I dislike
+  ;; For not I will disable it and replicate the \left\right behavior with aas, but it makes me unhappy to do so
+  ;; (setq LaTeX-electric-left-right-brace t)
   (setq TeX-electric-math '("$" . "$"))
   (defun my-LaTeX-mode-dollars () (font-lock-add-keywords nil `((,(rx "$") (0 'success t))) t))
   (defun preview-larger-previews ()
@@ -384,9 +428,10 @@
   (aas-set-snippets 'LaTeX-mode
     "sigma algebra" '(yas "$\\sigma$-algebra$0")
     "sigma finite" '(yas "$\\sigma$-finite$0")
-    ;; "\\[" '(yas "\\[ $0  ")
+    "\\[" '(yas "\\[ $0 \\]")
     :cond #'texmathp ; expand only in math mode
-    "\\{ " '(yas "\\{ $0 \\}")
+    ;; Doesn't work because of math-mode electric pairs. Use yas
+    ;; "\\{ " '(yas "\\{ $0 \\}")
     ;; "in" '(yas "\\in$0")
     "sub" '(yas "\\subset$0")
     "m*" '(yas "\\mu^*$0")
@@ -407,9 +452,8 @@
     "cal" '(yas "\\mathcal{$1}$0")
     ;; "int" '(yas "\\int_{$1}^{$2}$0")
     "int" '(yas "\\int$0")
+    "eps" '(yas "\\varepsilon$0")
     "..." '(yas "\\cdots$0")
-
-
     "||" '(yas "\\|$0\\|")
     "chi" '(yas "\\chi$0")
     "cupp" '(yas "\\bigcup_{$1}^{$2}$0")
@@ -418,6 +462,7 @@
     ;; "<" '(yas "\\langle $0")
     "left|" '(yas "\\left\\| $0 \\right\\|")
     "sum" '(yas "\\sum_{$1}^{$2}$0")))
+;; Todo if necessary/desired: if \left \right is used frequently, add snippets here
 
 
 ;; Ultra Scroll

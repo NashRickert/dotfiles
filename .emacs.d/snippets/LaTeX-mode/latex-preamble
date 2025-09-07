@@ -17,11 +17,6 @@
 \newcommand\halfclosed[2]{\ensuremath{[#1,#2)}}
 \newcommand\halfopen[2]{\ensuremath{(#1,#2]}}
 \newcommand{\C}{\mathbb{C}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\Q}{\mathbb{Q}}
-\renewcommand{\P}{\mathbb{P}}
 \setlength\parindent{0pt}
 
 
@@ -31,4 +26,5 @@
 \begin{document}
 \maketitle
 $0
+
 \end{document}

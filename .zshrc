@@ -1,15 +1,6 @@
 #-------------------- exports --------------------
 
-# Special CSE 481 names:
-export BFBUILD="${HOME}/aos_proj/build_milestone_1"
-export BFAOS="${HOME}/aos_proj/bf_aos"
-
 # export PATH="$PATH:~/.local/bin/:~/scripts:$HOME/.cargo/bin"
-
-# for reu xilinx
-export PATH=/opt/Xilinx/Vivado/2024.1/bin:$PATH
-export PATH=/opt/Xilinx/PetaLinux/2024.1/tool:$PATH
-alias plinux="startPetaLinux2024_1.sh"
 
 export EDITOR="nvim"
 export VISUAL="nvim"
@@ -17,8 +8,6 @@ export VISUAL="nvim"
 export AOSREPO="https://gitlab.cs.washington.edu/simpeter/aos.git"
 
 export LATEXINDENT_CONFIG="/home/nash/.config/latexindent/latexindent.yaml"
- 
-# $HOME/.config/latexindent/latexindent.yaml"
 
 # change colors of directories listed by ls to light purple 
 LS_COLORS=$LS_COLORS:"di=1;95:" ; export LS_COLORS  
@@ -112,18 +101,15 @@ bindkey -M viins "" history-incremental-search-backward
 
 #-------------------- aliases --------------------
 
-# alias vim="nvim"
+alias vim="nvim"
 # alias cat="bat"
 # alias aella="ssh -J nashr2@attu.cs.washington.edu nashr2@aella.cs.washington.edu"
 alias ptc="ssh -J nashr2@attu.cs.washington.edu nash@ptc.cs.washington.edu"
 alias e="emacsclient"
 
 # replace ls with eza
-# Note we now never show ~ files which might be an issue
-# Except with ls -I "" which overrides the previous -I
-# base_ls="eza --group-directories-first --icons=auto --git -h -I '*~'
-
-# Ignore some latex byproducts
+# Note we now never show the ignored files except with ls -I "" which overrides the previous -I
+# Ignore some latex byproducts and emacs backup files
 base_ls="eza --group-directories-first --icons=auto --git -h -I '*~|*.aux|*.out|*.toc|*.synctex.gz|*.synctex|*.nav|*.snm|*.vrb|*.bbl|*.blg|*.bcf|*.run.xml|*.pyg'"
 alias ls=$base_ls
 alias lsl="${base_ls} -l"
