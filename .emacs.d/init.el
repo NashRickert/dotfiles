@@ -50,8 +50,12 @@
 (winner-mode 1) 
 
 (setq-default c-electric-pound-behavior '(alignleft))
-(setq c-default-style "linux")
-;; (setq-default c-basic-offset 4)
+;; (setq c-default-style "linux")
+(setq-default c-basic-offset 8)
+(setq c-ts-mode-indent-style 'linux)
+(setq-default c-ts-mode-indent-offset 8)
+;; (setq c-ts-common-indent-offset 8)
+
 ;; (setq-default indent-tabs-mode nil)
 
 ;; Adds .ghcup/bin to both 'exec-path and "PATH" (those are different things)
@@ -61,7 +65,7 @@
 (setq shell-file-name "/usr/bin/zsh")
 
 (setopt dictionary-server "dict.org")
-(server-start) ;; Done so I can use emacsclient inside of vterm
+;; (server-start) ;; Done so I can use emacsclient inside of vterm
 
 (setq use-short-answers t)
 (setq auto-save-default nil)
@@ -93,7 +97,15 @@
  '(custom-safe-themes
    '("c5975101a4597094704ee78f89fb9ad872f965a84fb52d3e01b9102168e8dc40"
      default))
- '(package-selected-packages nil)
+ '(package-selected-packages
+   '(aas ace-window auctex cdlatex clang-format company-prescient corfu
+	 devdocs diff-hl docker doom-modeline ef-themes eglot-booster
+	 eldoc-box embark-consult evil-collection evil-surround
+	 gruvbox-theme haskell-mode helpful keychain-environment magit
+	 marginalia markdown-mode modus-themes orderless pdf-tools
+	 pomo-cat projectile quelpa rainbow-delimiters
+	 sideline-flymake treesit-auto vertico-prescient vterm
+	 which-key yasnippet))
  '(package-vc-selected-packages
    '((pomo-cat :vc-backend Git :url "https://github.com/kn66/pomo-cat.el")
      (doom-two-tone-themes :vc-backend Git :url

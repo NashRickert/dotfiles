@@ -23,9 +23,18 @@
 
 (use-package dired
   :ensure nil
+  ;; :hook
   :custom
   (dired-kill-when-opening-new-dired-buffer t)
-  (dired-listing-switches "-lah --group-directories-first"))
+  (dired-listing-switches "-lah --group-directories-first")
+  :config
+  (use-package dired-x
+    :ensure nil
+    :hook
+  (dired-mode . dired-omit-mode)
+    :config
+    ;; Hide files ending in ~
+    (setq dired-omit-files (concat dired-omit-files "\\|~$"))))
 
 (use-package isearch
   :ensure nil
@@ -211,6 +220,7 @@
   ;; Use of tabs doesn't play nice in latex mode
   (cdlatex-mode . (lambda() (company-mode 0)))) 
 
+
 ;; I cannot for the life of me get corfu to be work satisfyingly
 ;; Corfu
 ;; (use-package corfu
@@ -258,9 +268,12 @@
 :hook ((python-mode . eglot-ensure)
 	(c-mode . eglot-ensure)
 	(c-ts-mode . eglot-ensure)
+	(c++-mode . eglot-ensure)
+	(c++-ts-mode . eglot-ensure)
 	(java-ts-mode . eglot-ensure)
-	(python-ts-mode . eglot-ensure)
 	(java-mode . eglot-ensure)
+	(python-ts-mode . eglot-ensure)
+	(python-mode . eglot-ensure)
 	(haskell-mode . eglot-ensure)))
 
 ;; Note: wraps around emacs-lsp-booster installed from AUR
@@ -277,10 +290,25 @@
   :config
   (eglot-booster-mode))
 
-;; Should force emacs to use clangd instead of ccls
+(setenv "PATH" (concat (getenv "HOME") "/.opt/bin:" (getenv "PATH")))
+(add-to-list 'exec-path (expand-file-name "~/.opt/bin"))
+
+;; Note that jdtls is non trivial, but we basically install it somewhere and then
+;; set up a script that starts it like we want (jdtls.sh) and add that to the path
+;; An llm can give the script
 (with-eval-after-load 'eglot
+  ;; Add jdtls for Java
   (add-to-list 'eglot-server-programs
-               '((c++-mode c-mode) "clangd")))
+	       ;; actually important file path is absolute for eglot booster, otherwise won't work
+               `(java-mode . (,(expand-file-name "~/.opt/bin/jdtls.sh")
+                              :initializationOptions
+                              (:workspaceFolders
+                               [,(concat "file://" (expand-file-name "~/.cache/jdtls-workspace"))]))))
+  
+  ;; Add clangd for C/C++
+  ;; Should force emacs to use clangd instead of ccls
+  (add-to-list 'eglot-server-programs
+               '((c++-mode c-mode) . ("clangd"))))
 
 ;; Specific Language Modes
 (use-package haskell-mode)
@@ -428,7 +456,7 @@
   (aas-set-snippets 'LaTeX-mode
     "sigma algebra" '(yas "$\\sigma$-algebra$0")
     "sigma finite" '(yas "$\\sigma$-finite$0")
-    "\\[" '(yas "\\[ $0 \\]")
+    ;; "\\[" '(yas "\\[ $0 \\]")
     :cond #'texmathp ; expand only in math mode
     ;; Doesn't work because of math-mode electric pairs. Use yas
     ;; "\\{ " '(yas "\\{ $0 \\}")
@@ -437,8 +465,10 @@
     "m*" '(yas "\\mu^*$0")
     "m+" '(yas "\\mu^+$0")
     "m-" '(yas "\\mu^-$0")
+    "perp" '(yas "\\perp$0")
     ;; "n+" '(yas "\\nu^+$0")
     ;; "n-" '(yas "\\nu^-$0")
+    "Om" '(yas "\\Omega$0")
     "mu" '(yas "\\mu$0")
     "pi" '(yas "\\pi$0")
     "nu" '(yas "\\nu$0")
@@ -459,6 +489,7 @@
     "cupp" '(yas "\\bigcup_{$1}^{$2}$0")
     "capp" '(yas "\\bigcap_{$1}^{$2}$0")
     "prod" '(yas "\\prod_{$1}^{$2}$0")
+    "Ex" '(yas "\\E[$0]")
     ;; "<" '(yas "\\langle $0")
     "left|" '(yas "\\left\\| $0 \\right\\|")
     "sum" '(yas "\\sum_{$1}^{$2}$0")))

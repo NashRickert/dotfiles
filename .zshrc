@@ -1,6 +1,10 @@
 #-------------------- exports --------------------
 
+unset SSH_ASKPASS
+unset GIT_ASKPASS
+
 # export PATH="$PATH:~/.local/bin/:~/scripts:$HOME/.cargo/bin"
+export PATH="$HOME/.opt/bin:$PATH"
 
 export EDITOR="nvim"
 export VISUAL="nvim"

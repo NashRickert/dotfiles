@@ -2,6 +2,12 @@
 ;; Also could consider these to be simple or tertiary packages
 ;; That don't really interact with emacs in a complex way
 
+;; Not positive formatting on save is working
+(use-package clang-format
+  :hook
+  ((c-ts-mode c-mode) . clang-format-on-save-mode)
+  ((c++-ts-mode c++-mode) . clang-format-on-save-mode))
+
 
 ;; YASnippet
 ;; Karthink does something weird with warning which I ignore at my own peril
