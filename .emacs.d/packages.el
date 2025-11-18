@@ -221,37 +221,24 @@
   (cdlatex-mode . (lambda() (company-mode 0)))) 
 
 
-;; I cannot for the life of me get corfu to be work satisfyingly
-;; Corfu
-;; (use-package corfu
-;;   :ensure t
-;;   :defer t
-;;   :custom
-;;   (corfu-cycle t)
-;;   (corfu-auto nil)                       ;; Only completes when hitting TAB
-;;   (corfu-preview-current 'nil)
-;;   (corfu-count 10)
-;;   (corfu-auto-prefix 2)                  ;; Trigger completion after typing 1 character
-;;   (corfu-auto-delay 0.75)
-;;   (corfu-quit-no-match t)                ;; Quit popup if no match
-;;   (corfu-scroll-margin 5)                ;; Margin when scrolling completions
-;;   (corfu-max-width 50)                   ;; Maximum width of completion popup
-;;   (corfu-min-width 50)                   ;; Minimum width of completion popup
-;;   (corfu-popupinfo-delay 0.5)            ;; Delay before showing documentation popup
-;;   :bind
-;;   (:map corfu-map
-;;         ("TAB" . corfu-complete)     ;; Complete selection (matches your company config)
-;;         ([tab] . corfu-complete)     ;; Complete selection (matches your company config)
-;;         ("C-j" . corfu-next)         ;; Navigate down
-;;         ("C-k" . corfu-previous)     ;; Navigate up
-;;         ("RET" . nil)                ;; Disable RET for completion (similar to your company config)
-;;         ("<return>" . nil)
-;;         ("C-c d" . corfu-info-documentation)) ;; Show documentation (similar to company-show-doc-buffer
-;;   :hook
-;;   (cdlatex-mode . (lambda() (corfu-mode 0)))
-;;   :init
-;;   (global-corfu-mode)
-;;   (corfu-popupinfo-mode t))
+;; There is special documentation on gopls for emacs on the golang website
+;; https://go.dev/gopls/editor/emacs
+(use-package go-mode)
+
+;; Necessary for project pacakge to know about GOPATH and Go modules
+;; This tells it to go the the nearest parent go.mod as the project root
+(defun project-find-go-module (dir)
+  (when-let ((root (locate-dominating-file dir "go.mod")))
+    (cons 'go-module root)))
+
+(cl-defmethod project-root ((project (head go-module)))
+  (cdr project))
+
+(add-hook 'project-find-functions #'project-find-go-module)
+
+;; Note may want to consider package set-path-from-shell in the future to do this and others (adds startup time -- fine with daemon?)
+(setenv "PATH" (concat (getenv "HOME") "/go/bin:" (getenv "PATH")))
+(add-to-list 'exec-path (expand-file-name "~/go/bin"))
 
 
 ;; Eglot Mode
@@ -266,6 +253,8 @@
 ; These are annoying but do give persistent diagnostics (other is only in normal mode on the same line)
 (setq flymake-show-diagnostics-at-end-of-line nil) 
 :hook ((python-mode . eglot-ensure)
+	(go-mode . eglot-ensure)
+	(go-ts-mode . eglot-ensure)
 	(c-mode . eglot-ensure)
 	(c-ts-mode . eglot-ensure)
 	(c++-mode . eglot-ensure)
@@ -276,10 +265,18 @@
 	(python-mode . eglot-ensure)
 	(haskell-mode . eglot-ensure)))
 
+;; Optional: install eglot-format-buffer as a save hook.
+;; The depth of -10 places this before eglot's willSave notification,
+;; so that notification reports the actual contents that will be saved.
+;; (defun eglot-format-buffer-before-save ()
+;;   (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
+;; (add-hook 'go-mode-hook #'eglot-format-buffer-before-save)
+
 ;; Note: wraps around emacs-lsp-booster installed from AUR
 ;; Or through crates.io, or through binaries
 ;; Theoretically improves performance
 ;; Currently the emacs package itself requires manual installation with package-vc-install
+;; url: https://github.com/jdtsmith/eglot-booster
 ;; Theoretically could be automated through this use-package declaration, but I couldn't get it to work
 ;; Additional note: Only works through tramp if emacs-lsp-booster is installed there.
 ;; no-remote-boost t turns it off remotely

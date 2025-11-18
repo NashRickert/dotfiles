@@ -54,9 +54,28 @@
 (setq-default c-basic-offset 8)
 (setq c-ts-mode-indent-style 'linux)
 (setq-default c-ts-mode-indent-offset 8)
+(setq-default go-ts-mode-indent-offset 8)
 ;; (setq c-ts-common-indent-offset 8)
 
-;; (setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)
+
+;; All this style garbage should arguably go not in init.el
+
+;; Go: use tabs (required by gofmt/gopls)
+(defun my-go-mode-style ()
+  (setq indent-tabs-mode t)      ;; use tabs for indentation
+  (setq tab-width 4)             ;; but display as 4-space wide
+  (setq go-ts-mode-indent-offset 4)) ;; for tree-sitter go-ts-mode
+(add-hook 'go-ts-mode-hook #'my-go-mode-style)
+
+;; C/C++: use spaces, 8-wide indentation
+;; (defun my-c-style ()
+;;   (setq indent-tabs-mode nil)
+;;   (setq c-basic-offset 8)
+;;   (setq tab-width 8))
+;; (add-hook 'c-ts-mode-hook #'my-c-style)
+;; (add-hook 'c++-ts-mode-hook #'my-c-style)
 
 ;; Adds .ghcup/bin to both 'exec-path and "PATH" (those are different things)
 (add-to-list 'exec-path "/home/nash/.ghcup/bin/") 
@@ -97,19 +116,14 @@
  '(custom-safe-themes
    '("c5975101a4597094704ee78f89fb9ad872f965a84fb52d3e01b9102168e8dc40"
      default))
- '(package-selected-packages
-   '(aas ace-window auctex cdlatex clang-format company-prescient corfu
-	 devdocs diff-hl docker doom-modeline ef-themes eglot-booster
-	 eldoc-box embark-consult evil-collection evil-surround
-	 gruvbox-theme haskell-mode helpful keychain-environment magit
-	 marginalia markdown-mode modus-themes orderless pdf-tools
-	 pomo-cat projectile quelpa rainbow-delimiters
-	 sideline-flymake treesit-auto vertico-prescient vterm
-	 which-key yasnippet))
+ '(package-selected-packages '(eglot-booster))
  '(package-vc-selected-packages
-   '((pomo-cat :vc-backend Git :url "https://github.com/kn66/pomo-cat.el")
+   '((eglot-booster :vc-backend Git :url
+                    "https://github.com/jdtsmith/eglot-booster")
+     (pomo-cat :vc-backend Git :url
+               "https://github.com/kn66/pomo-cat.el")
      (doom-two-tone-themes :vc-backend Git :url
-			   "https://github.com/eliraz-refael/doom-two-tone-themes"))))
+                           "https://github.com/eliraz-refael/doom-two-tone-themes"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
