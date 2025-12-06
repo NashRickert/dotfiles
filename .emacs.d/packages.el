@@ -26,6 +26,7 @@
   ;; :hook
   :custom
   (dired-kill-when-opening-new-dired-buffer t)
+  (insert-directory-program "gls" dired-use-ls-dired-t) ;; necessary for dired to work on mac (if using below option)
   (dired-listing-switches "-lah --group-directories-first")
   :config
   (use-package dired-x
@@ -51,6 +52,20 @@
   :ensure nil
   :defer t)
 
+;; Huge issue on mac with installing the correct tree-sitter grammar versions (ABI 15 not supported, at least on this distribution of emacs)
+;; Solution is to ensure that I install an older version of the tree-sitter
+;; A differe emacs distribution might not have this issue? Idk
+(with-eval-after-load 'treesit
+(add-to-list 'treesit-language-source-alist
+             '(go . ("https://github.com/tree-sitter/tree-sitter-go"
+                     "v0.20.0"  ; <-- **REPLACE THIS WITH A KNOWN COMPATIBLE TAG**
+                     "src"))
+             '(go-mod . ("https://github.com/camdencheek/tree-sitter-go-mod"
+                     "v1.1.0"  ; <-- **REPLACE THIS WITH A KNOWN COMPATIBLE TAG**
+                     "src"))
+            )
+)
+
 ;; Note that using treesitter as default may cause some issues with hooking into other modes
 ;; eg settings for c-mode don't apply to c-ts-mode automatically
 ;; will need to resolve issues as they come up
@@ -58,7 +73,8 @@
   :ensure t
   :after emacs
   :custom
-  (treesit-auto-install 'prompt)
+  (treesit-auto-langs '(go, go-mod))
+  (treesit-auto-install nil)
   :config
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode t))
@@ -280,8 +296,10 @@
 ;; Theoretically could be automated through this use-package declaration, but I couldn't get it to work
 ;; Additional note: Only works through tramp if emacs-lsp-booster is installed there.
 ;; no-remote-boost t turns it off remotely
+
 (use-package eglot-booster
   :after eglot
+  :vc (:url "https://github.com/jdtsmith/eglot-booster")
   :custom
   (eglot-booster-no-remote-boost t)
   :config
@@ -515,14 +533,20 @@
 ;; Better ssh hopping (the keychain is to sync with an ssh agent)
 ;; Super high chance the tramp config stuff is unnecessary
 ;; Also can remove this stuff if I don't use it for a while
-(use-package keychain-environment
-  :defer 1
-  :config (keychain-refresh-environment)
-  :hook
-  (server-after-make-frame . keychain-refresh-environment))
+;; (use-package keychain-environment
+;;   :defer 1
+;;   :config (keychain-refresh-environment)
+;;   :hook
+;;   (server-after-make-frame . keychain-refresh-environment))
 
 (use-package tramp
   :defer t
   :config
   (setq tramp-default-method "ssh")
   (setq tramp-use-ssh-controlmaster-options nil))
+
+
+;; Used to sync direnvs with buffers so launched processes inherit proper environment
+;; Probably want to make sure this works, but not exactly sure how to
+(use-package envrc
+  :hook (after-init . envrc-global-mode))

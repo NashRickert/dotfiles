@@ -3,11 +3,12 @@
 unset SSH_ASKPASS
 unset GIT_ASKPASS
 
-# export PATH="$PATH:~/.local/bin/:~/scripts:$HOME/.cargo/bin"
-export PATH="$HOME/.opt/bin:$(go env GOPATH)/bin:$PATH"
+export PATH="$PATH:~/.local/bin/:~/scripts:$HOME/.cargo/bin"
+# export PATH="$HOME/.opt/bin:$(go env GOPATH)/bin:$PATH"
 
-export EDITOR="nvim"
-export VISUAL="nvim"
+# export EDITOR="emacsclient -c -a\"\""
+export EDITOR="emacs"
+export VISUAL="emacs"
 # export BROWSER="firefox-bin"
 export AOSREPO="https://gitlab.cs.washington.edu/simpeter/aos.git"
 
@@ -200,13 +201,21 @@ dvenv() {
 
 #-------------------- ssh agent --------------------
 # Requires keychain package installed
-eval $(keychain --eval --quiet id_ed25519 cse_481)
+# eval $(keychain --eval --quiet id_ed25519 cse_481)
 
 #-------------------- syntax highlighting --------------------
 
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 #-------------------- run on startup --------------------
 
 date
 # ufetch
+
+#-------- Job (Rubrik) --------
+SDMAIN="/Users/nash/sdmain"
+alias source_polaris="source ${SDMAIN}/polaris/.buildenv/bin/activate"
+ssh-add ~/.ssh/id_ed25519 --apple-use-keychain
+ssh-add --apple-use-keychain /Users/nash/.ssh/ig-dev
+eval "$(direnv hook zsh)"
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'; fi

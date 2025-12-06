@@ -100,7 +100,7 @@
   ;; Gives a custom name to vterm terminals
   (vterm-buffer-name-string "vterm %s")
   (vterm-max-scrollback 10000)
-  (vterm-shell "/usr/bin/zsh"))
+  (vterm-shell "/bin/zsh"))
   ;; :config
   ;; (define-key vterm-mode-map (kbd "C-a") #'vterm-send-C-a)
   ;; (define-key vterm-mode-map (kbd "C-x") #'vterm-send-C-x))
