@@ -122,7 +122,7 @@
          diff-hl doom-modeline eglot-booster eldoc-box embark-consult
          envrc evil-collection evil-surround go-mode haskell-mode
          helpful keychain-environment magit marginalia markdown-mode
-         modus-themes orderless pdf-tools projectile quelpa
+         modus-themes orderless pdf-tools posframe projectile quelpa
          rainbow-delimiters sideline-flymake treesit-auto
          vertico-prescient vterm yasnippet))
  '(package-vc-selected-packages
