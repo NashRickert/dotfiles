@@ -251,7 +251,7 @@
 (setq lsp-bridge-python-command (concat (getenv "HOME") "/lb-venv/bin/python3"))
 (global-lsp-bridge-mode)
 (setq lsp-bridge-enable-hover-diagnostic t)
-(setq lsp-bridge-log-level 'debug)
+; (setq lsp-bridge-log-level 'debug)
 
 
 ;; Eglot Mode
