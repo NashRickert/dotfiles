@@ -117,15 +117,15 @@
   :config
   (vertico-prescient-mode 1))
 
-(use-package company-prescient
-  :demand t
-  :after company prescient
-  :custom
-  ;; defaults
-  (company-prescient-enable-sorting t)
-  (company-prescient-override-sorting nil) ; Don't override `display-sort-function'
-  :config
-  (company-prescient-mode 1))
+;; (use-package company-prescient
+;;   :demand t
+;;   :after company prescient
+;;   :custom
+;;   ;; defaults
+;;   (company-prescient-enable-sorting t)
+;;   (company-prescient-override-sorting nil) ; Don't override `display-sort-function'
+;;   :config
+;;   (company-prescient-mode 1))
 
 
 ;; Consult
@@ -191,34 +191,34 @@
 
 ;; Company
 ;; I copy pasted this from the Emacs-kick init
-(use-package company
-  :defer t
-  :ensure t
-  :custom
-  (company-tooltip-align-annotations t)      ;; Align annotations with completions.
-  (company-minimum-prefix-length 1)          ;; Trigger completion after typing 1 character
-  (company-idle-delay 0.75)                   ;; Delay before showing completion (adjust as needed)
-  (company-tooltip-maximum-width 50)
-  :config
+;; (use-package company
+;;   :defer t
+;;   :ensure t
+;;   :custom
+;;   (company-tooltip-align-annotations t)      ;; Align annotations with completions.
+;;   (company-minimum-prefix-length 1)          ;; Trigger completion after typing 1 character
+;;   (company-idle-delay 0.75)                   ;; Delay before showing completion (adjust as needed)
+;;   (company-tooltip-maximum-width 50)
+;;   :config
 
-  ;; While using C-p C-n to select a completion candidate
-  ;; C-y quickly shows help docs for the current candidate
-  (define-key company-active-map (kbd "C-y")
-			  (lambda ()
-				(interactive)
-				(company-show-doc-buffer)))
-  (define-key company-active-map [tab] 'company-complete-selection)
-  (define-key company-active-map (kbd "TAB") 'company-complete-selection)
-  (define-key company-active-map [ret] nil)
-  (define-key company-active-map (kbd "<return>") nil)
-  (define-key company-active-map (kbd "RET") nil)
-  :hook
-  ;; Enable Company Mode globally after initialization.
-  (after-init . global-company-mode) 
-  ;; For now I think eshell mode is fine so long as command doesn't complete
-  ;; (eshell-mode . (lambda() (company-mode 0)))
-  ;; Use of tabs doesn't play nice in latex mode
-  (cdlatex-mode . (lambda() (company-mode 0)))) 
+;;   ;; While using C-p C-n to select a completion candidate
+;;   ;; C-y quickly shows help docs for the current candidate
+;;   (define-key company-active-map (kbd "C-y")
+;; 			  (lambda ()
+;; 				(interactive)
+;; 				(company-show-doc-buffer)))
+;;   (define-key company-active-map [tab] 'company-complete-selection)
+;;   (define-key company-active-map (kbd "TAB") 'company-complete-selection)
+;;   (define-key company-active-map [ret] nil)
+;;   (define-key company-active-map (kbd "<return>") nil)
+;;   (define-key company-active-map (kbd "RET") nil)
+;;   :hook
+;;   ;; Enable Company Mode globally after initialization.
+;;   (after-init . global-company-mode) 
+;;   ;; For now I think eshell mode is fine so long as command doesn't complete
+;;   ;; (eshell-mode . (lambda() (company-mode 0)))
+;;   ;; Use of tabs doesn't play nice in latex mode
+;;   (cdlatex-mode . (lambda() (company-mode 0)))) 
 
 
 ;; There is special documentation on gopls for emacs on the golang website
@@ -241,29 +241,42 @@
 (add-to-list 'exec-path (expand-file-name "~/go/bin"))
 
 
+(which-function-mode 1)
+(use-package posframe
+  :after dashboard)
+(add-to-list 'load-path (concat (getenv "HOME") "/lsp-bridge"))
+(require 'yasnippet)
+(yas-global-mode 1)
+(require 'lsp-bridge)
+(setq lsp-bridge-python-command (concat (getenv "HOME") "/lb-venv/bin/python3"))
+(global-lsp-bridge-mode)
+(setq lsp-bridge-enable-hover-diagnostic t)
+(setq lsp-bridge-log-level 'debug)
+
+
 ;; Eglot Mode
 ;; Using this for my minimal lsp
 ;; Note there are some possible performance improvements from
 ;; (setq eglot-events-buffer-size 0)
 ;; (fset #'jsonrpc--log-event #'ignore)
 ;; But I have no performance issues so I won't bother
-(use-package eglot
-:init
-(setq eglot-autoshutdown t) ;; shutdown when no more relevant buffers exist
-; These are annoying but do give persistent diagnostics (other is only in normal mode on the same line)
-(setq flymake-show-diagnostics-at-end-of-line nil) 
-:hook ((python-mode . eglot-ensure)
-	(go-mode . eglot-ensure)
-	(go-ts-mode . eglot-ensure)
-	(c-mode . eglot-ensure)
-	(c-ts-mode . eglot-ensure)
-	(c++-mode . eglot-ensure)
-	(c++-ts-mode . eglot-ensure)
-	(java-ts-mode . eglot-ensure)
-	(java-mode . eglot-ensure)
-	(python-ts-mode . eglot-ensure)
-	(python-mode . eglot-ensure)
-	(haskell-mode . eglot-ensure)))
+;; (use-package eglot
+;; :init
+;; (setq eglot-autoshutdown t) ;; shutdown when no more relevant buffers exist
+;; ; These are annoying but do give persistent diagnostics (other is only in normal mode on the same line)
+;; (setq flymake-show-diagnostics-at-end-of-line nil) 
+;; :hook ((python-mode . eglot-ensure)
+;; 	(go-mode . eglot-ensure)
+;; 	(go-ts-mode . eglot-ensure)
+;; 	(c-mode . eglot-ensure)
+;; 	(c-ts-mode . eglot-ensure)
+;; 	(c++-mode . eglot-ensure)
+;; 	(c++-ts-mode . eglot-ensure)
+;; 	(java-ts-mode . eglot-ensure)
+;; 	(java-mode . eglot-ensure)
+;; 	(python-ts-mode . eglot-ensure)
+;; 	(python-mode . eglot-ensure)
+;; 	(haskell-mode . eglot-ensure)))
 
 ;; Optional: install eglot-format-buffer as a save hook.
 ;; The depth of -10 places this before eglot's willSave notification,
