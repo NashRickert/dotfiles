@@ -104,8 +104,8 @@
 	    (slot . 1)))
 
 (load "~/.emacs.d/packages.el")
-(load "~/.emacs.d/functions.el")
-(load "~/.emacs.d/email.el")
+;; (load "~/.emacs.d/functions.el")
+;; (load "~/.emacs.d/email.el")
 
 
 (custom-set-variables

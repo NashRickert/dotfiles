@@ -4,6 +4,7 @@
 
 ;; Evil Mode
 (use-package evil
+  :ensure t
   :init
   (setq evil-want-integration t) ;; important
   (setq evil-want-keybinding nil) ;; applies evil to other modes

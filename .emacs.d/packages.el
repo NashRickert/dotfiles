@@ -180,7 +180,7 @@
   (setq projectile-switch-project-action #'projectile-dired))
 
 (load "~/.emacs.d/evil.el")
-(load "~/.emacs.d/basic.el")
+;; (load "~/.emacs.d/basic.el")
 
 ;; Magit
 (use-package magit)
