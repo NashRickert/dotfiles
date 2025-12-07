@@ -6,5 +6,6 @@
 !basic.el
 !evil.el
 !email.el
+!bridge.el
 !.gitignore
 !snippets/
