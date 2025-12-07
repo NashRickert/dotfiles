@@ -463,6 +463,7 @@
     "m+" '(yas "\\mu^+$0")
     "m-" '(yas "\\mu^-$0")
     "perp" '(yas "\\perp$0")
+    "Phi" '(yas "\\Phi$0")
     ;; "n+" '(yas "\\nu^+$0")
     ;; "n-" '(yas "\\nu^-$0")
     "Om" '(yas "\\Omega$0")
