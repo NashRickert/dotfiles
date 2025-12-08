@@ -6,5 +6,7 @@
 !basic.el
 !evil.el
 !email.el
+!extra.el
+!latex.el
 !.gitignore
 !snippets/

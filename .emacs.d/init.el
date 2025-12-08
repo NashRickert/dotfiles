@@ -105,7 +105,7 @@
 	    (slot . 1)))
 
 (load "~/.emacs.d/packages.el")
-(load "~/.emacs.d/functions.el")
+;; (load "~/.emacs.d/functions.el")
 ;; (load "~/.emacs.d/email.el")
 
 
@@ -117,14 +117,7 @@
  '(custom-safe-themes
    '("c5975101a4597094704ee78f89fb9ad872f965a84fb52d3e01b9102168e8dc40"
      default))
- '(package-selected-packages
-   '(aas ace-window auctex cdlatex clang-format company-prescient devdocs
-         diff-hl doom-modeline eglot-booster eldoc-box embark-consult
-         envrc evil-collection evil-surround go-mode haskell-mode
-         helpful keychain-environment magit marginalia markdown-mode
-         modus-themes orderless pdf-tools posframe projectile quelpa
-         rainbow-delimiters sideline-flymake treesit-auto
-         vertico-prescient vterm yasnippet))
+ '(package-selected-packages nil)
  '(package-vc-selected-packages
    '((eglot-booster :vc-backend Git :url
                     "https://github.com/jdtsmith/eglot-booster")
