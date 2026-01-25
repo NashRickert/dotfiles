@@ -55,16 +55,16 @@
 ;; Huge issue on mac with installing the correct tree-sitter grammar versions (ABI 15 not supported, at least on this distribution of emacs)
 ;; Solution is to ensure that I install an older version of the tree-sitter
 ;; A differe emacs distribution might not have this issue? Idk
-(with-eval-after-load 'treesit
-(add-to-list 'treesit-language-source-alist
-             '(go . ("https://github.com/tree-sitter/tree-sitter-go"
-                     "v0.20.0"  ; <-- **REPLACE THIS WITH A KNOWN COMPATIBLE TAG**
-                     "src"))
-             '(go-mod . ("https://github.com/camdencheek/tree-sitter-go-mod"
-                     "v1.1.0"  ; <-- **REPLACE THIS WITH A KNOWN COMPATIBLE TAG**
-                     "src"))
-            )
-)
+;; (with-eval-after-load 'treesit
+;; (add-to-list 'treesit-language-source-alist
+;;              '(go . ("https://github.com/tree-sitter/tree-sitter-go"
+;;                      "v0.20.0"  ; <-- **REPLACE THIS WITH A KNOWN COMPATIBLE TAG**
+;;                      "src"))
+;;              '(go-mod . ("https://github.com/camdencheek/tree-sitter-go-mod"
+;;                      "v1.1.0"  ; <-- **REPLACE THIS WITH A KNOWN COMPATIBLE TAG**
+;;                      "src"))
+;;             )
+;; )
 
 ;; Note that using treesitter as default may cause some issues with hooking into other modes
 ;; eg settings for c-mode don't apply to c-ts-mode automatically
@@ -73,8 +73,8 @@
   :ensure t
   :after emacs
   :custom
-  (treesit-auto-langs '(go, go-mod))
-  (treesit-auto-install nil)
+  ;; (treesit-auto-langs '(go, go-mod))
+  (treesit-auto-install 'prompt)
   :config
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode t))
@@ -199,10 +199,10 @@
 (load "~/.emacs.d/basic.el")
 
 ;; Magit
-(use-package magit)
+(use-package magit
   ;; This would make magit open its buffer in the same window by default
-  ;; :custom
-  ;; (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 
 ;; Company
@@ -249,6 +249,11 @@
 
 (cl-defmethod project-root ((project (head go-module)))
   (cdr project))
+
+;; (setq eglot-workspace-configuration
+;;       '((gopls . ((analyses . ((unreachableCode.enable . t)
+;;                               (nilReview.enable . t)))))))
+
 
 (add-hook 'project-find-functions #'project-find-go-module)
 

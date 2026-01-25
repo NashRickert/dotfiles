@@ -1,3 +1,15 @@
+# Use 'fd' instead of 'find' for speed and respecting .gitignore
+export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# Styling: Modern layout, border, and preview window
+export FZF_DEFAULT_OPTS="
+  --height 40% 
+  --layout=reverse 
+  --border 
+  --info=inline
+  --color='hl:148,hl+:154,pointer:032,marker:010,bg+:237'
+"
 #-------------------- exports --------------------
 
 unset SSH_ASKPASS
@@ -91,8 +103,8 @@ zle -N zle-keymap-select
 
 #-------------------- history --------------------
 
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=30000
+SAVEHIST=30000
 HISTFILE=~/.zsh_history
 # don't save command if identical to previous command 
 setopt HIST_IGNORE_ALL_DUPS
@@ -102,7 +114,13 @@ setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 
 # enable reverse search
-bindkey -M viins "" history-incremental-search-backward
+# bindkey -M viins "" history-incremental-search-backward
+# bindkey -M viins "^S" history-incremental-search-forward
+# stty -ixon
+
+source <(fzf --zsh)
+
+
 
 #-------------------- aliases --------------------
 
@@ -115,6 +133,7 @@ alias e="emacsclient"
 # replace ls with eza
 # Note we now never show the ignored files except with ls -I "" which overrides the previous -I
 # Ignore some latex byproducts and emacs backup files
+alias gs="git status -- . '!*vendor*'"
 base_ls="eza --group-directories-first --icons=auto --git -h -I '*~|*.aux|*.out|*.toc|*.synctex.gz|*.synctex|*.nav|*.snm|*.vrb|*.bbl|*.blg|*.bcf|*.run.xml|*.pyg'"
 alias ls=$base_ls
 alias lsl="${base_ls} -l"
