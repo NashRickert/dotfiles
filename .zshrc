@@ -1,13 +1,37 @@
+# fzf:
+# Use 'fd' instead of 'find' for speed and respecting .gitignore
+export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# Styling: Modern layout, border, and preview window
+export FZF_DEFAULT_OPTS="
+  --height 40%
+  --layout=reverse
+  --border
+  --info=inline
+  --color='hl:148,hl+:154,pointer:032,marker:010,bg+:237'
+"
 #-------------------- exports --------------------
 
 unset SSH_ASKPASS
 unset GIT_ASKPASS
 
-# export PATH="$PATH:~/.local/bin/:~/scripts:$HOME/.cargo/bin"
-export PATH="$HOME/.opt/bin:$(go env GOPATH)/bin:$PATH"
+# why tf do we need rust on mac?
+# ~/scripts just doesn't exist anywhere ?
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # ?
+   export PATH="$PATH:~/.local/bin/:~/scripts:$HOME/.cargo/bin"
+elif [[ "$OSTYPE" == "gnu-linux"* ]]; then
+    export PATH="$HOME/.opt/bin:$(go env GOPATH)/bin:$PATH"
+fi
 
-export EDITOR="nvim"
-export VISUAL="nvim"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    export EDITOR="emacs"
+    export VISUAL="emacs"
+elif [[ "$OSTYPE" == "gnu-linux"* ]]; then
+    export EDITOR="nvim"
+    export VISUAL="nvim"
+fi
 # export BROWSER="firefox-bin"
 export AOSREPO="https://gitlab.cs.washington.edu/simpeter/aos.git"
 
@@ -90,8 +114,8 @@ zle -N zle-keymap-select
 
 #-------------------- history --------------------
 
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=30000
+SAVEHIST=30000
 HISTFILE=~/.zsh_history
 # don't save command if identical to previous command 
 setopt HIST_IGNORE_ALL_DUPS
@@ -101,7 +125,10 @@ setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 
 # enable reverse search
-bindkey -M viins "" history-incremental-search-backward
+# bindkey -M viins "" history-incremental-search-backward
+# bindkey -M viins "^S" history-incremental-search-forward
+# stty -ixon
+source <(fzf --zsh)
 
 #-------------------- aliases --------------------
 
@@ -110,6 +137,11 @@ alias vim="nvim"
 # alias aella="ssh -J nashr2@attu.cs.washington.edu nashr2@aella.cs.washington.edu"
 alias ptc="ssh -J nashr2@attu.cs.washington.edu nash@ptc.cs.washington.edu"
 alias e="emacsclient"
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    alias gs="git status -- . '!*vendor*'"
+fi
+
 
 # replace ls with eza
 # Note we now never show the ignored files except with ls -I "" which overrides the previous -I
@@ -200,13 +232,28 @@ dvenv() {
 
 #-------------------- ssh agent --------------------
 # Requires keychain package installed
-eval $(keychain --eval --quiet id_ed25519 cse_481)
+# eval $(keychain --eval --quiet id_ed25519 cse_481)
 
 #-------------------- syntax highlighting --------------------
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+elif [[ "$OSTYPE" == "gnu-linux"* ]]; then
+    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
 
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 #-------------------- run on startup --------------------
 
 date
 # ufetch
+
+#----- Job
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    SDMAIN="/Users/nash/sdmain"
+    alias source_polaris="source ${SDMAIN}/polaris/.buildenv/bin/activate"
+    ssh-add ~/.ssh/id_ed25519 --apple-use-keychain
+    ssh-add --apple-use-keychain /Users/nash/.ssh/ig-dev
+    eval "$(direnv hook zsh)"
+    if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'; fi
+fi
+

@@ -36,7 +36,8 @@
 
   ;; Miscellaneous keybindings
   (evil-define-key 'normal 'global (kbd "<leader> j") 'ace-window)
-  (evil-define-key 'normal 'global (kbd "<leader> m") 'mu4e)
+  ;; (evil-define-key 'normal 'global (kbd "<leader> m") 'mu4e)
+  (evil-define-key 'normal 'global (kbd "<leader> m") 'magit)
 
   (evil-define-key 'normal 'global (kbd "<leader> <up>") 'enlarge-window)
   (evil-define-key 'normal 'global (kbd "<leader> <down>") 'shrink-window)
@@ -142,6 +143,12 @@
     (if (>= emacs-major-version 31)
         #'eldoc-box-help-at-point
         #'ek/lsp-describe-and-jump))
+
+  (evil-define-key 'normal 'global (kbd "gt") 'eglot-find-typeDefinition) ;; Go to previous tab
+  (evil-define-key 'normal 'global (kbd "gi") 'eglot-find-implementation) ;; Go to previous tab
+  (evil-define-key 'normal 'global (kbd "C-I") 'indent-for-tab-command) ;; Go to previous tab
+  (evil-define-key 'normal 'global (kbd "C-i") 'evil-jump-forward) ;; Go to previous tab
+  (evil-define-key 'normal 'global (kbd "ga") 'eglot-code-actions) ;; Go to previous tab
 
   ;; Commenting functionality for single and multiple lines
   (evil-define-key 'normal 'global (kbd "gcc")

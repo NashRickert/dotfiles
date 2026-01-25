@@ -185,10 +185,10 @@
 (load "~/.emacs.d/basic.el")
 
 ;; Magit
-(use-package magit)
+(use-package magit
   ;; This would make magit open its buffer in the same window by default
-  ;; :custom
-  ;; (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 
 ;; Company
@@ -284,6 +284,7 @@
 ;; no-remote-boost t turns it off remotely
 (use-package eglot-booster
   :after eglot
+  :vc (:url "https://github.com/jdtsmith/eglot-booster")
   :custom
   (eglot-booster-no-remote-boost t)
   :config
@@ -529,3 +530,6 @@
   :config
   (setq tramp-default-method "ssh")
   (setq tramp-use-ssh-controlmaster-options nil))
+
+
+;; Don't thing I need envrc to sync direnvs -- I just open emacs from the terminal properly
