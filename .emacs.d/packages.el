@@ -23,15 +23,17 @@
 
 (use-package dired
   :ensure nil
-  ;; :hook
   :custom
   (dired-kill-when-opening-new-dired-buffer t)
   (dired-listing-switches "-lah --group-directories-first")
   :config
+  (with-system darwin
+               ;; (setq dired-use-ls-dired t) ;; may be necessary, unsure
+               (setq insert-directory-program "gls"))
   (use-package dired-x
     :ensure nil
     :hook
-  (dired-mode . dired-omit-mode)
+    (dired-mode . dired-omit-mode)
     :config
     ;; Hide files ending in ~
     (setq dired-omit-files (concat dired-omit-files "\\|~$"))))

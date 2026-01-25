@@ -1,3 +1,15 @@
+;; Macro for evaluating basedon OS
+(defmacro with-system (type &rest body)
+  "Evaluate BODY if `system-type' equals TYPE."
+  (declare (indent defun))
+  `(when (eq system-type ',type)
+     ,@body))
+
+(with-system gnu/linux
+             (defvar shell-path "/usr/bin/zsh"))
+(with-system mac
+             (defvar shell-path "/bin/zsh"))
+
 ;; Gui adjustments (more minimal)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -6,7 +18,11 @@
 (tooltip-mode -1) ; Puts help text in minibuffer instead of popup
 
 ;; Startup preferences
-(setq visible-bell t) ; Visible bell on improper action
+(with-system gnu/linux
+             (setq visible-bell t)) ;; Visual bell on improper action
+(with-system darwin
+             (setq visible-bell nil)
+             (setq ring-bell-function 'ignore))
 (setq inhibit-startup-screen t)
 (setq initial-scratch-message "Hello Nash")
 
@@ -80,8 +96,8 @@
 ;; Adds .ghcup/bin to both 'exec-path and "PATH" (those are different things)
 (add-to-list 'exec-path "/home/nash/.ghcup/bin/") 
 (setenv "PATH" (concat "/home/nash/.ghcup/bin:" (getenv "PATH")))
-(setenv "SHELL" "/usr/bin/zsh")
-(setq shell-file-name "/usr/bin/zsh")
+(setenv "SHELL" shell-path)
+(setq shell-file-name shell-path)
 
 (setopt dictionary-server "dict.org")
 ;; (server-start) ;; Done so I can use emacsclient inside of vterm
@@ -105,7 +121,7 @@
 
 (load "~/.emacs.d/packages.el")
 (load "~/.emacs.d/functions.el")
-(load "~/.emacs.d/email.el")
+;; (load "~/.emacs.d/email.el")
 
 
 (custom-set-variables
