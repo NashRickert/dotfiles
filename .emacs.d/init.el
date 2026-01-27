@@ -7,7 +7,7 @@
 
 (with-system gnu/linux
              (defvar shell-path "/usr/bin/zsh"))
-(with-system mac
+(with-system darwin
              (defvar shell-path "/bin/zsh"))
 
 ;; Gui adjustments (more minimal)
@@ -132,7 +132,7 @@
  '(custom-safe-themes
    '("c5975101a4597094704ee78f89fb9ad872f965a84fb52d3e01b9102168e8dc40"
      default))
- '(package-selected-packages '(eglot-booster))
+ '(package-selected-packages nil)
  '(package-vc-selected-packages
    '((eglot-booster :vc-backend Git :url
                     "https://github.com/jdtsmith/eglot-booster")

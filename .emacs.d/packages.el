@@ -56,14 +56,15 @@
 ;; Note that using treesitter as default may cause some issues with hooking into other modes
 ;; eg settings for c-mode don't apply to c-ts-mode automatically
 ;; will need to resolve issues as they come up
-(use-package treesit-auto
-  :ensure t
-  :after emacs
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode t))
+(with-system gnu/linux
+  (use-package treesit-auto
+    :ensure t
+    :after emacs
+    :custom
+    (treesit-auto-install 'prompt)
+    :config
+    (treesit-auto-add-to-auto-mode-alist 'all)
+    (global-treesit-auto-mode t)))
 
 
 ;; Minibuffer Completion Frameworks
@@ -72,10 +73,10 @@
   (vertico-mode)
   :bind
   (:map vertico-map
-	("C-d" . (lambda () (interactive) (vertico-next 5)))
-	("C-u" . (lambda () (interactive) (vertico-previous 5)))
-	("C-j" . vertico-next)
-	("C-k" . vertico-previous))
+	    ("C-d" . (lambda () (interactive) (vertico-next 5)))
+	    ("C-u" . (lambda () (interactive) (vertico-previous 5)))
+	    ("C-j" . vertico-next)
+	    ("C-k" . vertico-previous))
   :custom
   (vertico-resize t))
 
@@ -95,39 +96,39 @@
 	
 
 ;; Don't know how useful exactly this is
-(use-package prescient
-  :custom
-  (prescient-aggressive-file-save t)
-  (prescient-sort-length-enable nil)
-  (prescient-sort-full-matches-first t)
-  (prescient-history-length 200)
-  (prescient-frequency-decay 0.997)
-  (prescient-frequency-threshold 0.05)
-  :config
-  (prescient-persist-mode 1))
+;; (use-package prescient
+;;   :custom
+;;   (prescient-aggressive-file-save t)
+;;   (prescient-sort-length-enable nil)
+;;   (prescient-sort-full-matches-first t)
+;;   (prescient-history-length 200)
+;;   (prescient-frequency-decay 0.997)
+;;   (prescient-frequency-threshold 0.05)
+;;   :config
+;;   (prescient-persist-mode 1))
 
-(use-package vertico-prescient
-  :demand t
-  :after vertico prescient
-  :custom
-  ;; default values
-  (vertico-prescient-enable-sorting t)
-  (vertico-prescient-override-sorting nil) ; Don't override `display-sort-function'
+;; (use-package vertico-prescient
+;;   :demand t
+;;   :after vertico prescient
+;;   :custom
+;;   ;; default values
+;;   (vertico-prescient-enable-sorting t)
+;;   (vertico-prescient-override-sorting nil) ; Don't override `display-sort-function'
 
-  ;; Filtering
-  (vertico-prescient-enable-filtering nil) ; We want orderless to do the filtering
-  :config
-  (vertico-prescient-mode 1))
+;;   ;; Filtering
+;;   (vertico-prescient-enable-filtering nil) ; We want orderless to do the filtering
+;;   :config
+;;   (vertico-prescient-mode 1))
 
-(use-package company-prescient
-  :demand t
-  :after company prescient
-  :custom
-  ;; defaults
-  (company-prescient-enable-sorting t)
-  (company-prescient-override-sorting nil) ; Don't override `display-sort-function'
-  :config
-  (company-prescient-mode 1))
+;; (use-package company-prescient
+;;   :demand t
+;;   :after company prescient
+;;   :custom
+;;   ;; defaults
+;;   (company-prescient-enable-sorting t)
+;;   (company-prescient-override-sorting nil) ; Don't override `display-sort-function'
+;;   :config
+;;   (company-prescient-mode 1))
 
 
 ;; Consult
@@ -186,6 +187,9 @@
 
 ;; Magit
 (use-package magit
+  :config
+  (with-system darwin
+	       (setq magit-git-executable "/opt/homebrew/bin/git"))
   ;; This would make magit open its buffer in the same window by default
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))

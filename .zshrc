@@ -139,7 +139,7 @@ alias ptc="ssh -J nashr2@attu.cs.washington.edu nash@ptc.cs.washington.edu"
 alias e="emacsclient"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    alias gs="git status -- . '!*vendor*'"
+    alias gs="git status -- . ':!*vendor*'"
 fi
 
 
