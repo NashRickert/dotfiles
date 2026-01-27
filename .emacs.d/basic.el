@@ -31,6 +31,9 @@
 (use-package diff-hl
   :defer t
   :ensure t
+  :config
+  (global-diff-hl-mode 1)
+  (diff-hl-margin-mode 1)
   :custom
   (diff-hl-side 'left)                           ;; Set the side for diff indicators.
   (diff-hl-margin-symbols-alist '((insert . "┃") ;; Customize symbols for each change type.

@@ -39,19 +39,6 @@
 (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
 (add-hook 'text-mode-hook (lambda () (display-line-numbers-mode 1)))
 
-;; Keybindings
-(define-key key-translation-map (kbd "ESC") (kbd "C-g")) 
-
-;; M-( works automatically. This is to allow wrapping over selected text in visual mode
-(global-set-key (kbd "M-[") 'insert-pair)
-(global-set-key (kbd "M-{") 'insert-pair)
-(global-set-key (kbd "M-\"") 'insert-pair)
-;; These settings allow deleting of matching with these commands (done on first delimiter)
-(global-set-key (kbd "M-)") 'delete-pair)
-(global-set-key (kbd "M-]") 'delete-pair)
-(global-set-key (kbd "M-}") 'delete-pair)
-
-
 ;; Parentheses
 (electric-pair-mode 1)
 (setq electric-pair-pairs '((?\" . ?\") (?\{ . ?\}) (?\( . ?\))))
@@ -119,8 +106,8 @@
 	    (side . bottom)
 	    (slot . 1)))
 
+(load "~/.emacs.d/keybinds.el")
 (load "~/.emacs.d/packages.el")
-(load "~/.emacs.d/functions.el")
 ;; (load "~/.emacs.d/email.el")
 
 
@@ -132,7 +119,7 @@
  '(custom-safe-themes
    '("c5975101a4597094704ee78f89fb9ad872f965a84fb52d3e01b9102168e8dc40"
      default))
- '(package-selected-packages nil)
+ '(package-selected-packages '(eglot-booster general))
  '(package-vc-selected-packages
    '((eglot-booster :vc-backend Git :url
                     "https://github.com/jdtsmith/eglot-booster")

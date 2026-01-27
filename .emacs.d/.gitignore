@@ -1,6 +1,8 @@
 /*
 
 !init.el
+!keybinds.el
+!latex.el
 !packages.el
 !functions.el
 !basic.el

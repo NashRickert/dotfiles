@@ -21,14 +21,14 @@ unset GIT_ASKPASS
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # ?
    export PATH="$PATH:~/.local/bin/:~/scripts:$HOME/.cargo/bin"
-elif [[ "$OSTYPE" == "gnu-linux"* ]]; then
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     export PATH="$HOME/.opt/bin:$(go env GOPATH)/bin:$PATH"
 fi
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     export EDITOR="emacs"
     export VISUAL="emacs"
-elif [[ "$OSTYPE" == "gnu-linux"* ]]; then
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     export EDITOR="nvim"
     export VISUAL="nvim"
 fi
@@ -237,7 +237,7 @@ dvenv() {
 #-------------------- syntax highlighting --------------------
 if [[ "$OSTYPE" == "darwin"* ]]; then
     source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-elif [[ "$OSTYPE" == "gnu-linux"* ]]; then
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
