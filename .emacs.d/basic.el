@@ -31,6 +31,8 @@
 (use-package diff-hl
   :defer t
   :ensure t
+  ;; :hook
+  ;; (prog-mode . diff-hl-margin-mode)
   :config
   (global-diff-hl-mode 1)
   (diff-hl-margin-mode 1)
