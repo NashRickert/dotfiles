@@ -7,3 +7,7 @@ fi
 
 # User specific environment and startup programs
 . "$HOME/.cargo/env"
+
+# >>> coursier install directory >>>
+export PATH="$PATH:/home/nash/.local/share/coursier/bin"
+# <<< coursier install directory <<<

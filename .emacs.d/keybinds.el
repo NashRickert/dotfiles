@@ -40,6 +40,7 @@
   "W" #'jump-to-register
 
   ;; Window splitting
+  "0" #'delete-window
   "1" #'delete-other-windows
   "2" (lambda ()
         (interactive)

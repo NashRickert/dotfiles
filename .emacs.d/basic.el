@@ -3,10 +3,10 @@
 ;; That don't really interact with emacs in a complex way
 
 ;; Not positive formatting on save is working
-(use-package clang-format
-  :hook
-  ((c-ts-mode c-mode) . clang-format-on-save-mode)
-  ((c++-ts-mode c++-mode) . clang-format-on-save-mode))
+(use-package clang-format)
+  ;; :hook
+  ;; ((c-ts-mode c-mode) . clang-format-on-save-mode)
+  ;; ((c++-ts-mode c++-mode) . clang-format-on-save-mode))
 
 
 ;; YASnippet

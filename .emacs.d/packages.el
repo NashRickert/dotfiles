@@ -57,6 +57,16 @@
 ;; eg settings for c-mode don't apply to c-ts-mode automatically
 ;; will need to resolve issues as they come up
 (with-system gnu/linux
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(go . ("https://github.com/tree-sitter/tree-sitter-go"
+                         "v0.20.0" ; <-- **REPLACE THIS WITH A KNOWN COMPATIBLE TAG**
+                         "src"))
+                 '(go-mod . ("https://github.com/camdencheek/tree-sitter-go-mod"
+                             "v1.1.0" ; <-- **REPLACE THIS WITH A KNOWN COMPATIBLE TAG**
+                             "src"))
+                 )
+    )
   (use-package treesit-auto
     :ensure t
     :after emacs
@@ -280,8 +290,9 @@
   :vc (:url "https://github.com/jdtsmith/eglot-booster")
   :custom
   (eglot-booster-no-remote-boost t)
-  :config
-  (eglot-booster-mode))
+  ;; :config
+  ;; (eglot-booster-mode)
+  )
 
 (setenv "PATH" (concat (getenv "HOME") "/.opt/bin:" (getenv "PATH")))
 (add-to-list 'exec-path (expand-file-name "~/.opt/bin"))
@@ -380,3 +391,24 @@
 
 
 ;; Don't thing I need envrc to sync direnvs -- I just open emacs from the terminal properly
+
+;; (use-package scala-mode
+;;   :interpreter
+;;   ("scala" . scala-ts-mode))
+(use-package scala-ts-mode
+  :custom (treesit-font-lock-level 4)
+  :interpreter
+  ("scala" . scala-ts-mode))
+
+(with-eval-after-load 'eglot
+(add-to-list 'eglot-server-programs
+            '(scala-ts-mode . ("metals-emacs"))
+             '(scala-mode . ("metals-emacs"))))
+
+;; (defun my-scala-mode-newline-fix ()
+;;   "Force newline-and-indent behavior in scala-mode."
+;;   (local-set-key (kbd "RET") 'newline-and-indent))
+
+;; (add-hook 'scala-mode-hook #'my-scala-mode-newline-fix)
+
+(setq create-lockfiles nil)

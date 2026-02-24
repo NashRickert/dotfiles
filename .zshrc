@@ -20,9 +20,9 @@ unset GIT_ASKPASS
 # ~/scripts just doesn't exist anywhere ?
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # ?
-   export PATH="$PATH:~/.local/bin/:~/scripts:$HOME/.cargo/bin"
+   export PATH="$PATH:$HOME/.local/bin/:~/scripts:$HOME/.cargo/bin:$HOME/.local/share/coursier/bin"
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    export PATH="$HOME/.opt/bin:$(go env GOPATH)/bin:$PATH"
+    export PATH="$HOME/.opt/bin:$(go env GOPATH)/bin:$PATH:$HOME/.local/share/coursier/bin"
 fi
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
